@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import * as React from 'react';
 import * as ReactModal from 'react-modal';
 import { PickUserModalProps } from './types';
@@ -19,8 +18,9 @@ export function PickUserModal(props: PickUserModalProps) {
     userFilterViewer,
     setUserFilterViewer,
     dataChannelPickedUsers,
-    deletionFunction,
-    dispatcherPickedUser,
+    resetPickedUserHistory,
+    handleBackToPresenterView,
+    showPresenterView,
   } = props;
 
   let userRole: string;
@@ -36,12 +36,6 @@ export function PickUserModal(props: PickUserModalProps) {
     title = 'You have been randomly picked';
   }
 
-  const [showPresenterView, setShowPresenterView] = useState<boolean>(
-    currentUser?.presenter && !pickedUser,
-  );
-  useEffect(() => {
-    setShowPresenterView(currentUser?.presenter && !pickedUser);
-  }, [currentUser, pickedUser]);
   return (
     <ReactModal
       className="plugin-modal"
@@ -75,13 +69,12 @@ export function PickUserModal(props: PickUserModalProps) {
                 setFilterOutPresenter,
                 userFilterViewer,
                 setUserFilterViewer,
-                deletionFunction,
+                resetPickedUserHistory,
                 handlePickRandomUser,
                 dataChannelPickedUsers,
                 pickedUser,
                 users,
                 userRole,
-                dispatcherPickedUser,
               }}
             />
           ) : (
@@ -90,8 +83,7 @@ export function PickUserModal(props: PickUserModalProps) {
                 pickedUser,
                 title,
                 currentUser,
-                setShowPresenterView,
-                dispatcherPickedUser,
+                handleBackToPresenterView,
               }}
             />
           )

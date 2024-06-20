@@ -6,6 +6,10 @@ export interface PickedUser {
     color: string;
 }
 
+export interface PickedUserIsShowing {
+    isShowing: boolean;
+}
+
 export interface PickRandomUserPluginProps {
     pluginName: string,
     pluginUuid: string,

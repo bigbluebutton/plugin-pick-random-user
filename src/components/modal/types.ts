@@ -1,5 +1,5 @@
-import { CurrentUserData, DeleteEntryFunction } from 'bigbluebutton-html-plugin-sdk';
-import { DataChannelEntryResponseType, PushEntryFunction } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
+import { CurrentUserData } from 'bigbluebutton-html-plugin-sdk';
+import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
 import { PickedUser } from '../pick-random-user/types';
 
 export interface PickUserModalProps {
@@ -14,6 +14,7 @@ export interface PickUserModalProps {
   userFilterViewer: boolean;
   setUserFilterViewer: (filter: boolean) => void;
   dataChannelPickedUsers?: DataChannelEntryResponseType<PickedUser>[];
-  deletionFunction: DeleteEntryFunction;
-  dispatcherPickedUser: PushEntryFunction;
+  resetPickedUserHistory: () => void;
+  showPresenterView: boolean;
+  handleBackToPresenterView: () => void;
 }
