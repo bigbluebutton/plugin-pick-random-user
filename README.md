@@ -2,7 +2,7 @@
 
 ## What is it?
 
-The Pick Random User Plugin shows a modal for moderator to pick a user (mainly viewer but it could also be a moderator) randomly out of the whole list of users present in a meetings. 
+The Pick Random User Plugin shows a modal for moderator to pick a user (mainly viewer but it could also be a moderator) randomly out of the whole list of users present in a meetings.
 
 ![Gif of plugin demo](./public/assets/plugin.gif)
 
@@ -24,11 +24,11 @@ npm start
       url: http://127.0.0.1:4701/static/PickRandomUserPlugin.js
       dataChannels:
         - name: pickRandomUser
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['moderator', 'creator']
         - name: modalInformationFromPresenter
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['moderator', 'creator']
 ```
 
 ## Building the Plugin
@@ -54,11 +54,11 @@ public:
       url: <<PLUGIN_URL>>
         dataChannels:
         - name: pickRandomUser
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['moderator', 'creator']
         - name: modalInformationFromPresenter
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['moderator', 'creator']
   ... // All other configurations
 ```
 

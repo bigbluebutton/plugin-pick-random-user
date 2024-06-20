@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { RESET_DATA_CHANNEL } from 'bigbluebutton-html-plugin-sdk';
 import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
 
 import { PickedUser } from '../../pick-random-user/types';
@@ -40,7 +39,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     setFilterOutPresenter,
     userFilterViewer,
     setUserFilterViewer,
-    deletionFunction,
+    resetPickedUserHistory,
     handlePickRandomUser,
     dataChannelPickedUsers,
     pickedUser,
@@ -103,7 +102,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
             type="button"
             className="clickable"
             onClick={() => {
-              deletionFunction([RESET_DATA_CHANNEL]);
+              resetPickedUserHistory();
             }}
           >
             Clear All
