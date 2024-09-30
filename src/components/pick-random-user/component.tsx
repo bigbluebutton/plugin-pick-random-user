@@ -112,9 +112,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
     if (pickedUserFromDataChannel.data
       && pickedUserFromDataChannel.data?.length > 0) {
       const pickedUserToUpdate = pickedUserFromDataChannel
-        .data[
-          pickedUserFromDataChannel.data.length - 1
-        ];
+        .data[0];
       setPickedUser(pickedUserToUpdate?.payloadJson);
       if (pickedUserToUpdate?.payloadJson) setShowModal(true);
     // If data already loaded, but there is none picked user
