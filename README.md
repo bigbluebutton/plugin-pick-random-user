@@ -54,11 +54,11 @@ public:
       url: <<PLUGIN_URL>>
         dataChannels:
         - name: pickRandomUser
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrdeletePermission: ['moderator', 'creator']
         - name: modalInformationFromPresenter
           writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          replaceOrdeletePermission: ['moderator', 'creator']
   ... // All other configurations
 ```
 
