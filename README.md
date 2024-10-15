@@ -25,10 +25,10 @@ npm start
       dataChannels:
         - name: pickRandomUser
           pushPermission: ['presenter']
-          replaceOrdeletePermission: ['moderator', 'creator']
+          replaceOrDeletePermission: ['presenter']
         - name: modalInformationFromPresenter
-          writePermission: ['presenter']
-          replaceOrdeletePermission: ['moderator', 'creator']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['presenter']
 ```
 
 ## Building the Plugin
@@ -54,11 +54,11 @@ public:
       url: <<PLUGIN_URL>>
         dataChannels:
         - name: pickRandomUser
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['presenter']
         - name: modalInformationFromPresenter
-          writePermission: ['presenter']
-          deletePermission: ['moderator', 'sender']
+          pushPermission: ['presenter']
+          replaceOrDeletePermission: ['presenter']
   ... // All other configurations
 ```
 
