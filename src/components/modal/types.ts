@@ -13,6 +13,8 @@ export interface PickUserModalProps {
   setFilterOutPresenter: (filter: boolean) => void,
   userFilterViewer: boolean;
   setUserFilterViewer: (filter: boolean) => void;
+  filterOutPickedUsers: boolean,
+  setFilterOutPickedUsers: (filter: boolean) => void,
   dataChannelPickedUsers?: DataChannelEntryResponseType<PickedUser>[];
   deletionFunction: DeleteEntryFunction;
   dispatcherPickedUser: PushEntryFunction;

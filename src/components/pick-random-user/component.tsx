@@ -19,6 +19,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
   const [pickedUser, setPickedUser] = useState<PickedUser | undefined>();
   const [userFilterViewer, setUserFilterViewer] = useState<boolean>(true);
   const [filterOutPresenter, setFilterOutPresenter] = useState<boolean>(true);
+  const [filterOutPickedUsers, setFilterOutPickedUsers] = useState<boolean>(true);
   const pluginApi: PluginApi = BbbPluginSdk.getPluginApi(uuid);
   const currentUserInfo = pluginApi.useCurrentUser();
   const { data: currentUser } = currentUserInfo;
@@ -49,6 +50,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
     if (modalInformation) {
       setFilterOutPresenter(modalInformation.skipPresenter);
       setUserFilterViewer(modalInformation.skipModerators);
+      setFilterOutPickedUsers(modalInformation.skipPickedUsers);
     }
   }, [modalInformationFromPresenter]);
 
@@ -56,7 +58,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
     user: allUsers?.user.filter((user) => {
       let roleFilter = true;
       if (userFilterViewer) roleFilter = user.role === Role.VIEWER;
-      if (pickedUserFromDataChannel.data) {
+      if (filterOutPickedUsers && pickedUserFromDataChannel.data) {
         return roleFilter && pickedUserFromDataChannel
           .data.findIndex(
             (u) => u?.payloadJson?.userId === user?.userId,
@@ -83,6 +85,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
       dispatchModalInformationFromPresenter({
         skipModerators: userFilterViewer,
         skipPresenter: filterOutPresenter,
+        skipPickedUsers: filterOutPickedUsers,
       });
       pushPickedUser(null);
     }
@@ -124,6 +127,8 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
           setFilterOutPresenter,
           userFilterViewer,
           setUserFilterViewer,
+          filterOutPickedUsers,
+          setFilterOutPickedUsers,
           dataChannelPickedUsers: pickedUserFromDataChannel.data,
           dispatcherPickedUser: pushPickedUser,
           deletionFunction: deletePickedUser,

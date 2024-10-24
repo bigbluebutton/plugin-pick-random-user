@@ -7,6 +7,8 @@ export interface PresenterViewComponentProps {
     setFilterOutPresenter: (filter: boolean) => void;
     userFilterViewer: boolean;
     setUserFilterViewer: (filter: boolean) => void;
+    filterOutPickedUsers: boolean;
+    setFilterOutPickedUsers: (filter: boolean) => void;
     deletionFunction: DeleteEntryFunction;
     handlePickRandomUser: () => void;
     dataChannelPickedUsers?: DataChannelEntryResponseType<PickedUser>[];
