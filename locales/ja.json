@@ -1,0 +1,20 @@
+{
+  "app.pickRandomUser.title": "ランダムに指名する",
+  "app.pickRandomUser.options": "設定",
+  "app.pickRandomUser.includeModerators": "司会者を含める",
+  "app.pickRandomUser.includePresenter": "発表者を含める",
+  "app.pickRandomUser.includePickedUsers": "既に指名した人を含める",
+  "app.pickRandomUser.availableForSelection": "指名可能な人",
+  "app.pickRandomUser.previouslyPicked": "既に指名された人",
+  "app.pickRandomUser.clearAll": "全消去",
+  "app.pickRandomUser.noUsersAvailableWarning": "{0}の中で指名できる人はいません",
+  "app.pickRandomUser.pickRandomUserButtonLabelAgain": "もう一度指名する",
+  "app.pickRandomUser.pickRandomUserButtonLabelRole": "{0}から指名する",
+  "app.pickRandomUser.viewer": "視聴者",
+  "app.pickRandomUser.viewers": "視聴者",
+  "app.pickRandomUser.user": "ユーザー",
+  "app.pickRandomUser.users": "ユーザー",
+  "app.pickRandomUser.youWerePicked": "あなたが指名されました",
+  "app.pickRandomUser.pickedUser": "指名された人",
+  "app.pickRandomUser.modal.closeButton": "閉じるボタン"
+}
