@@ -25,6 +25,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
   const [filterOutPickedUsers, setFilterOutPickedUsers] = useState<boolean>(true);
   const pluginApi: PluginApi = BbbPluginSdk.getPluginApi(uuid);
   const currentUserInfo = pluginApi.useCurrentUser();
+  const shouldUnmountPlugin = pluginApi.useShouldUnmountPlugin();
   const { data: currentUser } = currentUserInfo;
   const allUsersInfo = pluginApi
     .useCustomSubscription<UsersMoreInformationGraphqlResponse>(USERS_MORE_INFORMATION);
@@ -124,7 +125,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
   useEffect(() => {
     if (!currentUser?.presenter && dispatchModalInformationFromPresenter) handleCloseModal();
   }, [currentUser]);
-  return (
+  return !shouldUnmountPlugin && (
     <>
       <PickUserModal
         {...{
