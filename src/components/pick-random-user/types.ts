@@ -4,6 +4,7 @@ export interface PickedUser {
     userId: string;
     name: string;
     role: string;
+    avatar: string;
     color: string;
 }
 

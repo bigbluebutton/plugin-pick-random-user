@@ -34,6 +34,7 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
       dispatcherPickedUser(null);
     }
   };
+  const avatarUrl = pickedUserWithEntryId.pickedUser.avatar;
   return (
     <div
       style={{
@@ -44,12 +45,20 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
       {
         (pickedUserWithEntryId) ? (
           <>
-            <div
-              className="modal-avatar"
-              style={{ backgroundColor: `${pickedUserWithEntryId.pickedUser?.color}` }}
-            >
-              {pickedUserWithEntryId.pickedUser?.name.slice(0, 2)}
-            </div>
+            {avatarUrl ? (
+              <img
+                alt={`Avatar of user ${pickedUserWithEntryId.pickedUser.name}`}
+                src={avatarUrl}
+                className="modal-avatar-img"
+              />
+            ) : (
+              <div
+                className="modal-avatar"
+                style={{ backgroundColor: `${pickedUserWithEntryId.pickedUser?.color}` }}
+              >
+                {pickedUserWithEntryId.pickedUser?.name.slice(0, 2)}
+              </div>
+            )}
             <p className="user-name">{pickedUserWithEntryId.pickedUser?.name}</p>
           </>
         ) : null

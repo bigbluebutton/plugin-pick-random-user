@@ -6,6 +6,7 @@ subscription usersMoreInformation {
     userId
     role
     presenter
+    avatar
   }
 }
 `;
