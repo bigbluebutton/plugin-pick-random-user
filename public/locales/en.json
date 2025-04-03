@@ -1,0 +1,21 @@
+{
+  "pickRandomUserPlugin.modal.pickedUserView.title.currentUserPicked": "You have been randomly picked",
+  "pickRandomUserPlugin.modal.pickedUserView.title.randomUserPicked": "Randomly picked user",
+  "pickRandomUserPlugin.modal.pickedUserView.backButton.label": "back",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.title": "Options",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.skipModeratorsLabel": "Skip moderators",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.skipPresenterLabel": "Skip presenter",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.includePickedUsersLabel": "Include already picked user",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.title": "Available for selection",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.userLabel": "user",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.userLabelPlural": "users",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabel": "viewer",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabelPlural": "viewers",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.title": "Previously picked",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.clearButtonLabel": "Clear All",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.noUsersWarning": "No {0} available to randomly pick from",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickUser": "Pick {0}",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickAgain": "Pick again",
+  "pickRandomUserPlugin.actionsButtonDropdown.label.pickUser": "Pick random user",
+  "pickRandomUserPlugin.actionsButtonDropdown.label.viewLastPickedUser": "Display last randomly picked user"
+}

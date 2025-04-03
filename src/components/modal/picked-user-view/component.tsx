@@ -1,9 +1,25 @@
 import * as React from 'react';
+import { defineMessages } from 'react-intl';
 import { PickedUserViewComponentProps } from './types';
+
+const intlMessages = defineMessages({
+  currentUserPicked: {
+    id: 'pickRandomUserPlugin.modal.pickedUserView.title.currentUserPicked',
+    description: 'Title to show that current user has been picked',
+  },
+  randomUserPicked: {
+    id: 'pickRandomUserPlugin.modal.pickedUserView.title.randomUserPicked',
+    description: 'Title to show that random user has been picked',
+  },
+  backButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.pickedUserView.backButton.label',
+    description: 'Label of back button in picked-user view on the modal',
+  },
+});
 
 export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
   const {
-    title,
+    intl,
     pickedUserWithEntryId,
     currentUser,
     updatePickedRandomUser,
@@ -34,6 +50,10 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
       dispatcherPickedUser(null);
     }
   };
+
+  const title = (pickedUserWithEntryId?.pickedUser?.userId === currentUser?.userId)
+    ? intl.formatMessage(intlMessages.currentUserPicked)
+    : intl.formatMessage(intlMessages.randomUserPicked);
   return (
     <div
       style={{
@@ -56,7 +76,9 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
       }
       {
         (currentUser?.presenter) ? (
-          <button type="button" onClick={handleBackToPresenterView}>back</button>
+          <button type="button" onClick={handleBackToPresenterView}>
+            {intl.formatMessage(intlMessages.backButtonLabel)}
+          </button>
         ) : null
       }
     </div>

@@ -28,6 +28,7 @@ export function PickUserModal(props: PickUserModalProps) {
   const {
     pluginSettings,
     isPluginSettingsLoading,
+    intl,
     showModal,
     handleCloseModal,
     users,
@@ -45,16 +46,6 @@ export function PickUserModal(props: PickUserModalProps) {
     deletionFunction,
     dispatcherPickedUser,
   } = props;
-
-  let userRole: string;
-  if (userFilterViewer) {
-    userRole = (users?.length !== 1) ? 'viewers' : 'viewer';
-  } else {
-    userRole = (users?.length !== 1) ? 'users' : 'user';
-  }
-  const title = (pickedUserWithEntryId?.pickedUser?.userId === currentUser?.userId)
-    ? 'You have been randomly picked'
-    : 'Randomly picked user';
 
   const [showPresenterView, setShowPresenterView] = useState<boolean>(
     currentUser?.presenter && !pickedUserWithEntryId,
@@ -105,6 +96,7 @@ export function PickUserModal(props: PickUserModalProps) {
           ? (
             <PresenterViewComponent
               {...{
+                intl,
                 filterOutPresenter,
                 setFilterOutPresenter,
                 userFilterViewer,
@@ -116,7 +108,6 @@ export function PickUserModal(props: PickUserModalProps) {
                 dataChannelPickedUsers,
                 pickedUserWithEntryId,
                 users,
-                userRole,
                 dispatcherPickedUser,
               }}
             />
@@ -124,7 +115,7 @@ export function PickUserModal(props: PickUserModalProps) {
             <PickedUserViewComponent
               {...{
                 pickedUserWithEntryId,
-                title,
+                intl,
                 updatePickedRandomUser,
                 currentUser,
                 setShowPresenterView,

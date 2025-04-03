@@ -2,6 +2,7 @@
   "requiredSdkVersion": "~0.0.65",
   "name": "PickRandomUserPlugin",
   "javascriptEntrypointUrl": "PickRandomUserPlugin.js",
+  "localesBaseUrl": "locales",
   "dataChannels": [
       {
           "name": "modalInformationFromPresenter",

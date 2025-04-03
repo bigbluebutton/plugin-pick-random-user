@@ -1,9 +1,69 @@
 import * as React from 'react';
 import { RESET_DATA_CHANNEL } from 'bigbluebutton-html-plugin-sdk';
 import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
+import { defineMessages } from 'react-intl';
 
 import { PickedUser } from '../../pick-random-user/types';
 import { PresenterViewComponentProps } from './types';
+
+const intlMessages = defineMessages({
+  optionsTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.title',
+    description: 'Title of the options section on modal`s presenter view',
+  },
+  skipModeratorsLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.skipModeratorsLabel',
+    description: 'Label of skip moderator`s option on modal`s presenter view',
+  },
+  skipPresenterLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.skipPresenterLabel',
+    description: 'Label of skip presenter`s option on modal`s presenter view',
+  },
+  includePickedUsersLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.includePickedUsersLabel',
+    description: 'Label of include picked users option on modal`s presenter view',
+  },
+  availableTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.title',
+    description: 'Title of the "available users" section on modal`s presenter view',
+  },
+  userLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.userLabel',
+    description: 'Label to count user in "available users" section on presenter view',
+  },
+  userLabelPlural: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.userLabelPlural',
+    description: 'Label to count users in "available users" section on presenter view',
+  },
+  viewerLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabel',
+    description: 'Label to count viewer in "available users" section on presenter view',
+  },
+  viewerLabelPlural: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabelPlural',
+    description: 'Label to count viewers in "available users" section on presenter view',
+  },
+  previouslyPickedTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.title',
+    description: 'Title of the "previously picked" section on presenter view',
+  },
+  clearButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.clearButtonLabel',
+    description: 'Label of button to clear list of already picked users',
+  },
+  noUsersWarning: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.noUsersWarning',
+    description: 'Warning that there is no user to be picked',
+  },
+  pickButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickUser',
+    description: 'Label of the button to pick another user',
+  },
+  pickAgainButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickAgain',
+    description: 'Label of the button to pick another user',
+  },
+});
 
 const MAX_NAMES_TO_SHOW = 3;
 
@@ -37,6 +97,7 @@ const makeVerticalListOfNames = (
 
 export function PresenterViewComponent(props: PresenterViewComponentProps) {
   const {
+    intl,
     filterOutPresenter,
     setFilterOutPresenter,
     userFilterViewer,
@@ -48,9 +109,19 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     dataChannelPickedUsers,
     pickedUserWithEntryId,
     users,
-    userRole,
   } = props;
 
+  let userRoleLabel: string;
+  const usersCountVariable = { 0: users?.length };
+  if (userFilterViewer) {
+    userRoleLabel = (users?.length !== 1)
+      ? intl.formatMessage(intlMessages.viewerLabelPlural, usersCountVariable)
+      : intl.formatMessage(intlMessages.viewerLabel, usersCountVariable);
+  } else {
+    userRoleLabel = (users?.length !== 1)
+      ? intl.formatMessage(intlMessages.userLabelPlural, usersCountVariable)
+      : intl.formatMessage(intlMessages.userLabel, usersCountVariable);
+  }
   return (
     <div
       style={{
@@ -58,7 +129,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
       }}
     >
       <div className="moderator-view-wrapper">
-        <p className="moderator-view-label">Options</p>
+        <p className="moderator-view-label">{intl.formatMessage(intlMessages.optionsTitle)}</p>
         <p className="moderator-view-value">
           <label className="check-box-label-container" htmlFor="skipModerators">
             <input
@@ -71,7 +142,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="skipModerators"
             />
-            <span className="check-box-label">Skip moderators</span>
+            <span className="check-box-label">{intl.formatMessage(intlMessages.skipModeratorsLabel)}</span>
           </label>
           <label className="check-box-label-container" htmlFor="skipPresenter">
             <input
@@ -84,7 +155,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="skipPresenter"
             />
-            <span className="check-box-label">Skip Presenter</span>
+            <span className="check-box-label">{intl.formatMessage(intlMessages.skipPresenterLabel)}</span>
           </label>
           <label className="check-box-label-container" htmlFor="includePickedUsers">
             <input
@@ -97,24 +168,20 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="includePickedUsers"
             />
-            <span className="check-box-label">Include already picked users</span>
+            <span className="check-box-label">{intl.formatMessage(intlMessages.includePickedUsersLabel)}</span>
           </label>
         </p>
       </div>
       <div className="moderator-view-wrapper">
-        <p className="moderator-view-label">Available for selection</p>
+        <p className="moderator-view-label">{intl.formatMessage(intlMessages.availableTitle)}</p>
         <p className="moderator-view-value">
-          {users?.length}
-          {' '}
-          {userRole}
-          :
-          {' '}
+          {`${users?.length} ${userRoleLabel}: `}
           {makeHorizontalListOfNames(users)}
         </p>
       </div>
       <div className="moderator-view-wrapper">
         <div className="moderator-view-wrapper-title">
-          <p className="moderator-view-label">Previously picked</p>
+          <p className="moderator-view-label">{intl.formatMessage(intlMessages.previouslyPickedTitle)}</p>
           <button
             type="button"
             className="clickable"
@@ -122,7 +189,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               deletionFunction([RESET_DATA_CHANNEL]);
             }}
           >
-            Clear All
+            {intl.formatMessage(intlMessages.clearButtonLabel)}
           </button>
         </div>
         <ul className="moderator-view-list">
@@ -141,16 +208,14 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
             }}
           >
             {
-            (pickedUserWithEntryId) ? 'Pick again' : `Pick ${userRole}`
+            (pickedUserWithEntryId)
+              ? intl.formatMessage(intlMessages.pickAgainButtonLabel)
+              : intl.formatMessage(intlMessages.pickButtonLabel, { 0: userRoleLabel })
             }
           </button>
         ) : (
           <p>
-            No
-            {' '}
-            {userRole}
-            {' '}
-            available to randomly pick from
+            {intl.formatMessage(intlMessages.noUsersWarning, { 0: userRoleLabel })}
           </p>
         )
       }
