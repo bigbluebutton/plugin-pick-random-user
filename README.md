@@ -8,6 +8,8 @@ The Pick Random User Plugin is listed in the apps gallery for presenters to pick
 
 ## Building the Plugin
 
+First, double check what branch of the repository you are working with. At time of writing branch `main` produces a version of the plugin that is suitable with BigBlueButton 3.0. Branch `v3.1.x-release` is compatible with BigBlueButton 3.1.
+
 To build the plugin for production use, follow these steps:
 
 ```bash
@@ -26,7 +28,7 @@ To use the plugin in BigBlueButton, send this parameter along in create call:
 pluginManifests=[{"url":"<your-domain>/path/to/manifest.json"}]
 ```
 
-Or additionally, you can add this same configuration in the `.properties` file from `bbb-web` in `/usr/share/bbb-web/WEB-INF/classes/bigbluebutton.properties`
+Or additionally, you can add this same configuration in `bbb-web`'s properties in `/etc/bigbluebutton/bbb-web.properties`
 
 
 ## Development mode
