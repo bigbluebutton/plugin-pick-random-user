@@ -4,15 +4,20 @@
   "javascriptEntrypointUrl": "PickRandomUserPlugin.js",
   "localesBaseUrl": "locales",
   "dataChannels": [
-      {
-          "name": "modalInformationFromPresenter",
-          "pushPermission": ["presenter"],
-          "replaceOrDeletePermission": ["creator", "moderator"]
-      },
-      {
-          "name": "pickRandomUser",
-          "pushPermission": ["presenter"],
-          "replaceOrDeletePermission": ["creator", "moderator"]
-      }
+    {
+      "name": "modalInformationFromPresenter",
+      "pushPermission": ["presenter"],
+      "replaceOrDeletePermission": ["creator", "moderator"]
+    },
+    {
+      "name": "pickRandomUser",
+      "pushPermission": ["presenter"],
+      "replaceOrDeletePermission": ["creator", "moderator"]
+    },
+    {
+      "name": "pickedUserSeenEntry",
+      "pushPermission": ["all"],
+      "replaceOrDeletePermission": ["moderator"]
+    }
   ]
 }

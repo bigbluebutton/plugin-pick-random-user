@@ -1,5 +1,4 @@
 export interface PickedUser {
-    isPresenterViewing: boolean;
     presenter: boolean;
     userId: string;
     name: string;
@@ -28,20 +27,7 @@ export interface ModalInformationFromPresenter {
     includePickedUsers: boolean;
 }
 
-export interface DataChannelArrayMessages <T> {
-    createdAt: string;
-    dataChannel: string;
-    fromUserId: string;
-    messageId: string;
-    payloadJson: T;
-    pluginName: string;
-    toRoles: string[];
-}
-
-export interface DataChannelPickedUserResponse {
-    pluginDataChannelMessage: DataChannelArrayMessages<PickedUser>[];
-}
-
-export interface DataChannelLastResetTimeResponse {
-    pluginDataChannelMessage: DataChannelArrayMessages<Date>[];
+export interface PickedUserSeenEntryDataChannel {
+    pickedUserId: string;
+    seenByUserId: string;
 }

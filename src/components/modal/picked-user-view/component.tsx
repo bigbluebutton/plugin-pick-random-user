@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { defineMessages } from 'react-intl';
 import { PickedUserViewComponentProps } from './types';
 import * as Styled from './styles';
+import hasCurrentUserSeenPickedUser from '../../../utils/utils';
 
 const intlMessages = defineMessages({
   currentUserPicked: {
@@ -28,42 +29,37 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
     intl,
     pickedUserWithEntryId,
     currentUser,
-    updatePickedRandomUser,
     setShowPresenterView,
-    dispatcherPickedUser,
+    pickedUserSeenEntries,
+    pushPickedUserSeen,
   } = props;
-
-  useEffect(() => {
-    if (currentUser?.presenter) {
-      updatePickedRandomUser(pickedUserWithEntryId.entryId, {
-        ...pickedUserWithEntryId.pickedUser,
-        isPresenterViewing: true,
-      });
-    }
-    return () => {
-      if (currentUser?.presenter) {
-        updatePickedRandomUser(pickedUserWithEntryId.entryId, {
-          ...pickedUserWithEntryId.pickedUser,
-          isPresenterViewing: false,
-        });
-      }
-    };
-  }, []);
 
   const handleBackToPresenterView = () => {
     if (currentUser?.presenter) {
       setShowPresenterView(true);
-      dispatcherPickedUser(null);
     }
   };
-  const avatarUrl = pickedUserWithEntryId.pickedUser.avatar;
+  const avatarUrl = pickedUserWithEntryId?.pickedUser?.avatar;
 
+  useEffect(() => {
+    const hasCurrentUserSeen = hasCurrentUserSeenPickedUser(
+      pickedUserSeenEntries,
+      currentUser?.userId,
+      pickedUserWithEntryId?.pickedUser?.userId,
+    );
+    if (pickedUserWithEntryId && !hasCurrentUserSeen) {
+      pushPickedUserSeen({
+        pickedUserId: pickedUserWithEntryId?.pickedUser.userId,
+        seenByUserId: currentUser.userId,
+      });
+    }
+  }, []);
   const title = (pickedUserWithEntryId?.pickedUser?.userId === currentUser?.userId)
     ? intl.formatMessage(intlMessages.currentUserPicked)
     : intl.formatMessage(intlMessages.randomUserPicked);
 
   const avatarAltDescriptor = intl.formatMessage(intlMessages.currentUserPicked, {
-    0: pickedUserWithEntryId.pickedUser.name,
+    0: pickedUserWithEntryId?.pickedUser?.name,
   });
   return (
     <Styled.PickedUserViewWrapper>
@@ -78,12 +74,12 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
               />
             ) : (
               <Styled.PickedUserAvatarInitials
-                background={pickedUserWithEntryId.pickedUser?.color}
+                background={pickedUserWithEntryId?.pickedUser?.color}
               >
-                {pickedUserWithEntryId.pickedUser?.name.slice(0, 2)}
+                {pickedUserWithEntryId?.pickedUser?.name.slice(0, 2)}
               </Styled.PickedUserAvatarInitials>
             )}
-            <Styled.PickedUserName>{pickedUserWithEntryId.pickedUser?.name}</Styled.PickedUserName>
+            <Styled.PickedUserName>{pickedUserWithEntryId?.pickedUser?.name}</Styled.PickedUserName>
           </>
         ) : null
       }
