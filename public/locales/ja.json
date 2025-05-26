@@ -1,0 +1,22 @@
+{
+  "pickRandomUserPlugin.modal.pickedUserView.title.currentUserPicked": "あなたが指名されました",
+  "pickRandomUserPlugin.modal.pickedUserView.title.randomUserPicked": "指名された人",
+  "pickRandomUserPlugin.modal.pickedUserView.backButton.label": "戻る",
+  "pickRandomUserPlugin.modal.pickedUserView.avatarImage.alternativeText": "ユーザー {0} のアバター画像",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.title": "設定",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.skipModeratorsLabel": "司会者を含めない",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.skipPresenterLabel": "発表者を含めない",
+  "pickRandomUserPlugin.modal.presenterView.optionSection.includePickedUsersLabel": "既に指名した人を含める",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.title": "指名可能な人",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.userLabel": "ユーザー",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.userLabelPlural": "ユーザー",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabel": "視聴者",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabelPlural": "視聴者",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.title": "既に指名された人",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.clearButtonLabel": "全消去",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.noUsersWarning": "{0}の中で指名できる人はいません",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickUser": "{0}から指名する",
+  "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickAgain": "もう一度指名する",
+  "pickRandomUserPlugin.actionsButtonDropdown.label.pickUser": "ランダムに指名する",
+  "pickRandomUserPlugin.actionsButtonDropdown.label.viewLastPickedUser": "最後に指名されたユーザーを表示"
+}
