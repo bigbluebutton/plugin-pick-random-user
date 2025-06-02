@@ -59,7 +59,7 @@ npm ci
 npm run build-bundle
 ```
 
-The above command will generate the `dist` folder, containing the bundled JavaScript file named `PickRandomUserPlugin.js`. This file can be hosted on any HTTPS server along with its `manifest.json`.
+The above command will generate the `dist` folder, containing the bundled JavaScript file named `PickRandomUserPlugin.js`, a directory of locale files and a license files. These files can be hosted on any HTTPS server along with the `manifest.json` which is also part of the `dist/` directory.
 
 If you install the Plugin separated to the manifest, remember to change the `javascriptEntrypointUrl` in the `manifest.json` to the correct endpoint.
 
