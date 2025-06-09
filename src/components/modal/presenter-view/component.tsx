@@ -1,9 +1,84 @@
 import * as React from 'react';
 import { RESET_DATA_CHANNEL } from 'bigbluebutton-html-plugin-sdk';
 import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
+import { defineMessages } from 'react-intl';
 
+import * as Styled from './styles';
 import { PickedUser } from '../../pick-random-user/types';
 import { PresenterViewComponentProps } from './types';
+
+const intlMessages = defineMessages({
+  optionsTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.title',
+    description: 'Title of the options section on modal`s presenter view',
+    defaultMessage: 'Options',
+  },
+  skipModeratorsLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.skipModeratorsLabel',
+    description: 'Label of skip moderator`s option on modal`s presenter view',
+    defaultMessage: 'Skip moderators',
+  },
+  skipPresenterLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.skipPresenterLabel',
+    description: 'Label of skip presenter`s option on modal`s presenter view',
+    defaultMessage: 'Skip presenter',
+  },
+  includePickedUsersLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.optionSection.includePickedUsersLabel',
+    description: 'Label of include picked users option on modal`s presenter view',
+    defaultMessage: 'Include already picked user',
+  },
+  availableTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.title',
+    description: 'Title of the "available users" section on modal`s presenter view',
+    defaultMessage: 'Available for selection',
+  },
+  userLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.userLabel',
+    description: 'Label to count user in "available users" section on presenter view',
+    defaultMessage: 'user',
+  },
+  userLabelPlural: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.userLabelPlural',
+    description: 'Label to count users in "available users" section on presenter view',
+    defaultMessage: 'users',
+  },
+  viewerLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabel',
+    description: 'Label to count viewer in "available users" section on presenter view',
+    defaultMessage: 'viewer',
+  },
+  viewerLabelPlural: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.viewerLabelPlural',
+    description: 'Label to count viewers in "available users" section on presenter view',
+    defaultMessage: 'viewers',
+  },
+  previouslyPickedTitle: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.title',
+    description: 'Title of the "previously picked" section on presenter view',
+    defaultMessage: 'Previously picked',
+  },
+  clearButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.clearButtonLabel',
+    description: 'Label of button to clear list of already picked users',
+    defaultMessage: 'Clear All',
+  },
+  noUsersWarning: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.noUsersWarning',
+    description: 'Warning that there is no user to be picked',
+    defaultMessage: 'No {0} available to randomly pick from',
+  },
+  pickButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickUser',
+    description: 'Label of the button to pick another user',
+    defaultMessage: 'Pick {0}',
+  },
+  pickAgainButtonLabel: {
+    id: 'pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.pickButtonLabel.pickAgain',
+    description: 'Label of the button to pick another user',
+    defaultMessage: 'Pick again',
+  },
+});
 
 const MAX_NAMES_TO_SHOW = 3;
 
@@ -21,8 +96,9 @@ const makeVerticalListOfNames = (
   list?: DataChannelEntryResponseType<PickedUser>[],
 ) => list?.filter((u) => !!u.payloadJson).map((u) => {
   const time = new Date(u.createdAt);
+  const timeMiliseconds = time.getTime();
   return (
-    <li key={u.payloadJson.userId}>
+    <li key={`${u.payloadJson.userId}-${timeMiliseconds}`}>
       {u.payloadJson.name}
       {' '}
       (
@@ -36,6 +112,7 @@ const makeVerticalListOfNames = (
 
 export function PresenterViewComponent(props: PresenterViewComponentProps) {
   const {
+    intl,
     filterOutPresenter,
     setFilterOutPresenter,
     userFilterViewer,
@@ -47,19 +124,27 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     dataChannelPickedUsers,
     pickedUserWithEntryId,
     users,
-    userRole,
   } = props;
 
+  let userRoleLabel: string;
+  const usersCountVariable = { 0: users?.length };
+  if (userFilterViewer) {
+    userRoleLabel = (users?.length !== 1)
+      ? intl.formatMessage(intlMessages.viewerLabelPlural, usersCountVariable)
+      : intl.formatMessage(intlMessages.viewerLabel, usersCountVariable);
+  } else {
+    userRoleLabel = (users?.length !== 1)
+      ? intl.formatMessage(intlMessages.userLabelPlural, usersCountVariable)
+      : intl.formatMessage(intlMessages.userLabel, usersCountVariable);
+  }
   return (
-    <div
-      style={{
-        width: '100%', height: '100%', alignItems: 'flex-start', display: 'flex', flexDirection: 'column',
-      }}
-    >
-      <div className="moderator-view-wrapper">
-        <p className="moderator-view-label">Options</p>
-        <p className="moderator-view-value">
-          <label className="check-box-label-container" htmlFor="skipModerators">
+    <Styled.PresenterViewContentWrapper>
+      <Styled.PresenterViewSectionWrapper>
+        <Styled.PresenterViewSectionTitle>
+          {intl.formatMessage(intlMessages.optionsTitle)}
+        </Styled.PresenterViewSectionTitle>
+        <Styled.PresenterViewSectionContent>
+          <Styled.CheckboxLabelWrapper htmlFor="skipModerators">
             <input
               type="checkbox"
               id="skipModerators"
@@ -70,9 +155,11 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="skipModerators"
             />
-            <span className="check-box-label">Skip moderators</span>
-          </label>
-          <label className="check-box-label-container" htmlFor="skipPresenter">
+            <Styled.CheckboxLabel>
+              {intl.formatMessage(intlMessages.skipModeratorsLabel)}
+            </Styled.CheckboxLabel>
+          </Styled.CheckboxLabelWrapper>
+          <Styled.CheckboxLabelWrapper htmlFor="skipPresenter">
             <input
               type="checkbox"
               id="skipPresenter"
@@ -83,9 +170,11 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="skipPresenter"
             />
-            <span className="check-box-label">Skip Presenter</span>
-          </label>
-          <label className="check-box-label-container" htmlFor="includePickedUsers">
+            <Styled.CheckboxLabel>
+              {intl.formatMessage(intlMessages.skipPresenterLabel)}
+            </Styled.CheckboxLabel>
+          </Styled.CheckboxLabelWrapper>
+          <Styled.CheckboxLabelWrapper htmlFor="includePickedUsers">
             <input
               type="checkbox"
               id="includePickedUsers"
@@ -96,63 +185,63 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               name="options"
               value="includePickedUsers"
             />
-            <span className="check-box-label">Include already picked users</span>
-          </label>
-        </p>
-      </div>
-      <div className="moderator-view-wrapper">
-        <p className="moderator-view-label">Available for selection</p>
-        <p className="moderator-view-value">
-          {users?.length}
-          {' '}
-          {userRole}
-          :
-          {' '}
+            <Styled.CheckboxLabel>
+              {intl.formatMessage(intlMessages.includePickedUsersLabel)}
+            </Styled.CheckboxLabel>
+          </Styled.CheckboxLabelWrapper>
+        </Styled.PresenterViewSectionContent>
+      </Styled.PresenterViewSectionWrapper>
+      <Styled.PresenterViewSectionWrapper>
+        <Styled.PresenterViewSectionTitle>
+          {intl.formatMessage(intlMessages.availableTitle)}
+        </Styled.PresenterViewSectionTitle>
+        <Styled.PresenterViewSectionContent>
+          {`${users?.length} ${userRoleLabel}: `}
           {makeHorizontalListOfNames(users)}
-        </p>
-      </div>
-      <div className="moderator-view-wrapper">
-        <div className="moderator-view-wrapper-title">
-          <p className="moderator-view-label">Previously picked</p>
-          <button
+        </Styled.PresenterViewSectionContent>
+      </Styled.PresenterViewSectionWrapper>
+      <Styled.PresenterViewSectionWrapper>
+        <Styled.PresenterViewSectionTitleWrapper>
+          <Styled.PresenterViewSectionTitle>
+            {intl.formatMessage(intlMessages.previouslyPickedTitle)}
+          </Styled.PresenterViewSectionTitle>
+          <Styled.PresenterViewSectionClearAllButton
             type="button"
-            className="clickable"
             onClick={() => {
               deletionFunction([RESET_DATA_CHANNEL]);
             }}
           >
-            Clear All
-          </button>
-        </div>
-        <ul className="moderator-view-list">
-          {
-            makeVerticalListOfNames(dataChannelPickedUsers)
-          }
-        </ul>
-      </div>
+            {intl.formatMessage(intlMessages.clearButtonLabel)}
+          </Styled.PresenterViewSectionClearAllButton>
+        </Styled.PresenterViewSectionTitleWrapper>
+        <Styled.PresenterViewSectionListWrapper>
+          <Styled.PresenterViewSectionList>
+            {
+              makeVerticalListOfNames(dataChannelPickedUsers)
+            }
+          </Styled.PresenterViewSectionList>
+        </Styled.PresenterViewSectionListWrapper>
+      </Styled.PresenterViewSectionWrapper>
       {
         users?.length > 0 ? (
-          <button
+          <Styled.PickUserButton
             type="button"
-            className="button-style"
             onClick={() => {
               handlePickRandomUser();
             }}
           >
             {
-            (pickedUserWithEntryId) ? 'Pick again' : `Pick ${userRole}`
+            (pickedUserWithEntryId)
+              ? intl.formatMessage(intlMessages.pickAgainButtonLabel)
+              : intl.formatMessage(intlMessages.pickButtonLabel, { 0: userRoleLabel })
             }
-          </button>
+          </Styled.PickUserButton>
         ) : (
           <p>
-            No
-            {' '}
-            {userRole}
-            {' '}
-            available to randomly pick from
+            {intl.formatMessage(intlMessages.noUsersWarning, { 0: userRoleLabel })}
           </p>
         )
       }
-    </div>
+    </Styled.PresenterViewContentWrapper>
   );
 }

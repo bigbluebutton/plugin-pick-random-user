@@ -1,12 +1,22 @@
-import { CurrentUserData } from 'bigbluebutton-html-plugin-sdk';
-import { PushEntryFunction, ReplaceEntryFunction } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
-import { PickedUser, PickedUserWithEntryId } from '../../pick-random-user/types';
+import {
+  CurrentUserData,
+  DataChannelEntryResponseType,
+  GraphqlResponseWrapper,
+  PushEntryFunction,
+} from 'bigbluebutton-html-plugin-sdk';
+import { IntlShape } from 'react-intl';
+import { PickedUserWithEntryId, PickedUserSeenEntryDataChannel } from '../../pick-random-user/types';
 
 export interface PickedUserViewComponentProps {
-    title: string;
-    updatePickedRandomUser: ReplaceEntryFunction<PickedUser>;
+    intl: IntlShape;
     pickedUserWithEntryId: PickedUserWithEntryId;
     currentUser: CurrentUserData;
+    pickedUserSeenEntries: GraphqlResponseWrapper<
+        DataChannelEntryResponseType<PickedUserSeenEntryDataChannel>[]>;
+    pushPickedUserSeen: PushEntryFunction<PickedUserSeenEntryDataChannel>;
     setShowPresenterView: React.Dispatch<React.SetStateAction<boolean>>;
-    dispatcherPickedUser: PushEntryFunction
+}
+
+export interface ModalAvatarProps {
+    background: string;
 }
