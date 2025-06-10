@@ -89,9 +89,9 @@ export function PickedUserViewComponent(props: PickedUserViewComponentProps) {
       }
       {
         (currentUser?.presenter) ? (
-          <button type="button" onClick={handleBackToPresenterView}>
+          <Styled.BackButton type="button" onClick={handleBackToPresenterView}>
             {intl.formatMessage(intlMessages.backButtonLabel)}
-          </button>
+          </Styled.BackButton>
         ) : null
       }
     </Styled.PickedUserViewWrapper>
