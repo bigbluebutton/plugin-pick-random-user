@@ -76,8 +76,8 @@ const PickUserButton = styled.button`
   border: 3px solid transparent;
   overflow: visible;
   display: inline-block;
-  background-color: #0F70D7;
-  color: #FFF;
+  background-color: var(--btn-primary-bg, var(--color-primary, #0F70D7));
+  color: var(--btn-primary-color, var(--color-white, #FFF));
   border-radius: 2px;
   font-weight: 600;
   line-height: 1;
@@ -88,7 +88,8 @@ const PickUserButton = styled.button`
   user-select: none;
   padding: 8px 15px;
   &:hover {
-    background-color: #0C57A7;
+    color: var(--btn-primary-color, var(--color-white, #FFF));
+    background-color: var(--btn-primary-hover-bg, #0C57A7) !important;
   }
 `;
 

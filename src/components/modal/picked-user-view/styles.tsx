@@ -43,10 +43,32 @@ const PickedUserName = styled.p`
   font-weight: 500;
 `;
 
+const BackButton = styled.button`
+  border: 3px solid transparent;
+  overflow: visible;
+  display: inline-block;
+  background-color: var(--btn-primary-bg, var(--color-primary, #0F70D7));
+  color: var(--btn-primary-color, var(--color-white, #FFF));
+  border-radius: 2px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  padding: 8px 15px;
+  &:hover {
+    color: var(--btn-primary-color, var(--color-white, #FFF));
+    background-color: var(--btn-primary-hover-bg, #0C57A7) !important;
+  }
+`;
+
 export {
   PickedUserViewWrapper,
   PickedUserViewTitle,
   PickedUserAvatarInitials,
   PickedUserAvatarImage,
   PickedUserName,
+  BackButton
 };
