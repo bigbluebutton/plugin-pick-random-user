@@ -47,6 +47,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
   }, [isPluginSettingsLoading, pluginSettings]);
 
   const currentUserInfo = pluginApi.useCurrentUser();
+  const shouldUnmountPlugin = pluginApi.useShouldUnmountPlugin();
   const { data: currentUser } = currentUserInfo;
   const allUsersInfo = pluginApi
     .useCustomSubscription<UsersMoreInformationGraphqlResponse>(USERS_MORE_INFORMATION);
@@ -171,7 +172,7 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
     if (!currentUser?.presenter && dispatchModalInformationFromPresenter) handleCloseModal();
   }, [currentUser]);
   if (!intl || localeMessagesLoading) return null;
-  return (
+  return !shouldUnmountPlugin && (
     <>
       <PickUserModal
         {...{
