@@ -113,6 +113,8 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
     }).filter((user) => {
       if (filterOutPresenter) return !user.presenter;
       return true;
+    }).sort((userA, userB) => {
+      return userA?.name.localeCompare(userB?.name);
     }),
   };
 
