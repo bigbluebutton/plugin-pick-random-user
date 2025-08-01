@@ -20,6 +20,7 @@ function PickRandomUserPlugin({ pluginApi, intl }: PickRandomUserPluginProps) {
   const [
     pickedUserWithEntryId,
     setPickedUserWithEntryId] = useState<PickedUserWithEntryId | undefined>();
+  const shouldPluginUnmount = pluginApi.useShouldUnmountPlugin();
   const currentUserInfo = pluginApi.useCurrentUser();
   const { data: currentUser } = currentUserInfo;
 
@@ -102,7 +103,7 @@ function PickRandomUserPlugin({ pluginApi, intl }: PickRandomUserPluginProps) {
     currentUser,
   ]);
   if (!pickedUserWithEntryId) return null;
-  return (
+  return !shouldPluginUnmount && (
     <PickUserModal
       {...{
         intl,

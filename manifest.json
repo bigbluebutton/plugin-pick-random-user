@@ -1,5 +1,5 @@
 {
-  "requiredSdkVersion": "~0.0.70",
+  "requiredSdkVersion": "~0.1.5",
   "name": "PickRandomUserPlugin",
   "javascriptEntrypointUrl": "PickRandomUserPlugin.js",
   "dataChannels": [
