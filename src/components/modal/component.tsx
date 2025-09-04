@@ -49,9 +49,13 @@ export function PickUserModal(props: PickUserModalProps) {
     ? intl.formatMessage(intlMessages.youWerePicked)
     : intl.formatMessage(intlMessages.pickedUser);
 
+  if (!showModal) return null;
+
   return (
     <Styled.PluginModal
-      overlayClassName="modal-overlay"
+      overlayClassName="modalOverlay"
+      portalClassName="modal-low"
+      parentSelector={() => document.querySelector('#modals-container') as HTMLElement}
       isOpen={showModal}
       onRequestClose={handleCloseModal}
     >
