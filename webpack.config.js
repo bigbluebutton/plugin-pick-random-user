@@ -5,8 +5,8 @@ const path = require('path');
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    filename: 'PickRandomUserPlugin.js',
-    library: 'PickRandomUserPlugin',
+    filename: 'BbbPluginPickRandomUser.js',
+    library: 'BbbPluginPickRandomUser',
     libraryTarget: 'umd',
     publicPath: '/',
     globalObject: 'this',

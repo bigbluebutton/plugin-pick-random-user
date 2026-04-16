@@ -24,7 +24,7 @@ If you have any suggestions, requirements, or questions, don’t hesitate to con
 Down below, we list all the possible configurations this plugin supports, and then a brief explanation:
 
 ```yaml
-- name: PickRandomUserPlugin
+- name: BbbPluginPickRandomUser
   settings:
     pingSoundEnabled: true
     pingSoundUrl: resources/sounds/doorbell.mp3
@@ -60,7 +60,7 @@ After the countdown finishes, all close methods become available. To change this
 public:
   # ...
   plugins:
-    - name: PickRandomUserPlugin
+    - name: BbbPluginPickRandomUser
       settings:
         preventCloseDelaySeconds: 5  # Set to 0 to disable the delay
 ```
@@ -73,7 +73,7 @@ By default, browser notification when user is randomly picked is not enabled. To
 public:
   # ...
   plugins:
-    - name: PickRandomUserPlugin 
+    - name: BbbPluginPickRandomUser 
       settings:
         browserNotificationEnabled: false
 ```
@@ -85,7 +85,7 @@ By default, ping sound is played for the randomly picked user. To remove this fe
 So within that file and in `public.plugins` add the following configurations:
 
 ```yaml
-- name: PickRandomUserPlugin
+- name: BbbPluginPickRandomUser
   settings:
     pingSoundEnabled: false
 ```
@@ -96,7 +96,7 @@ The result yaml will look like:
 public:
   # ...
   plugins:
-    - name: PickRandomUserPlugin 
+    - name: BbbPluginPickRandomUser 
       settings:
         pingSoundEnabled: false
 ```
@@ -124,12 +124,12 @@ These are the possible `mp3` that already come within a BBB server, if you want 
 To build the plugin for production use, follow these steps:
 
 ```bash
-cd $HOME/src/plugin-pick-random-user-plugin
+cd $HOME/src/bbb-plugin-pick-random-user
 npm ci
 npm run build-bundle
 ```
 
-The above command will generate the `dist` folder, containing the bundled JavaScript file named `PickRandomUserPlugin.js`, a directory of locale files and a license files. These files can be hosted on any HTTPS server along with the `manifest.json` which is also part of the `dist/` directory.
+The above command will generate the `dist` folder, containing the bundled JavaScript file named `BbbPluginPickRandomUser.js`, a directory of locale files and a license files. These files can be hosted on any HTTPS server along with the `manifest.json` which is also part of the `dist/` directory.
 
 If you install the Plugin separated to the manifest, remember to change the `javascriptEntrypointUrl` in the `manifest.json` to the correct endpoint.
 

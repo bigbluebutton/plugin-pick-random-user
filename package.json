@@ -1,5 +1,5 @@
 {
-  "name": "pick-random-user-plugin",
+  "name": "bbb-plugin-pick-random-user",
   "version": "0.0.8",
   "private": true,
   "main": "./src/index.tsx",
