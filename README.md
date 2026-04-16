@@ -124,7 +124,7 @@ These are the possible `mp3` that already come within a BBB server, if you want 
 To build the plugin for production use, follow these steps:
 
 ```bash
-cd $HOME/src/plugin-pick-random-user-plugin
+cd $HOME/src/bbb-plugin-pick-random-user
 npm ci
 npm run build-bundle
 ```
