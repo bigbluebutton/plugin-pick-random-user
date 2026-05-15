@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import ReactModal from 'react-modal';
+import { colorGrayLightest, colorPrimary } from '../../styles/pallete';
 
 const PluginModal = styled(ReactModal)`
   position: relative;
@@ -95,9 +96,30 @@ const ButtonClose = styled.button`
   }
 `;
 
+const ProgressBarContainer = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background-color: ${colorGrayLightest};
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  overflow: hidden;
+`;
+
+const ProgressBarFill = styled.div<{ progress: number }>`
+  height: 100%;
+  background-color: ${colorPrimary};
+  width: ${({ progress }) => `${progress}%`};
+  transition: width 0.03s linear;
+`;
+
 export default {
   PluginModal,
   ModalOverlay,
   ModalContainer,
   ButtonClose,
+  ProgressBarContainer,
+  ProgressBarFill,
 };
