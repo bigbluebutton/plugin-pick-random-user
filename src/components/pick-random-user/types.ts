@@ -8,6 +8,7 @@ export interface PickedUser {
     name: string;
     role: string;
     color: string;
+    bot: boolean;
 }
 
 export interface PickedUserWithEntryId {

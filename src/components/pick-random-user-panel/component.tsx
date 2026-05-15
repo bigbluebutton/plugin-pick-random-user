@@ -145,7 +145,7 @@ export function PickRandomUserPanelComponent(props: PickRandomUserPanelComponent
     includePickedUsers,
   ]);
 
-  const usersToBePicked: PickedUser[] = allUsers?.user
+  const usersToBePicked: PickedUser[] = (allUsers?.user ?? []).filter((user) => !user.bot)
     .filter((user) => {
       let roleFilter = true;
       if (!includeModerators) roleFilter = user.role === Role.VIEWER;
