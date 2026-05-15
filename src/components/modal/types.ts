@@ -10,4 +10,5 @@ export interface PickUserModalProps {
   handleCloseModal: () => void;
   pickedUserWithEntryId: PickedUserWithEntryId;
   currentUser: CurrentUserData;
+  isBot: boolean;
 }

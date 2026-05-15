@@ -4,12 +4,14 @@ import * as ReactDOM from 'react-dom/client';
 
 import { GenericContentSidekickArea } from 'bigbluebutton-html-plugin-sdk';
 import {
+  BotDataWrapper,
   PickRandomUserPluginProps,
   PickedUser,
   PickedUserWithEntryId,
 } from './types';
 import { PickUserModal } from '../modal/component';
 import { Role } from './enums';
+import { BOT_SUBSCRIPTION } from './queries';
 import { PickRandomUserPanelComponent } from '../pick-random-user-panel/component';
 import { intlMessages } from '../../intlMessages';
 
@@ -23,6 +25,9 @@ function PickRandomUserPlugin({ pluginApi, intl }: PickRandomUserPluginProps) {
   const shouldPluginUnmount = pluginApi.useShouldUnmountPlugin();
   const currentUserInfo = pluginApi.useCurrentUser();
   const { data: currentUser } = currentUserInfo;
+  const { data: botData } = pluginApi
+    .useCustomSubscription!<BotDataWrapper>(BOT_SUBSCRIPTION) || {};
+  const isBot = botData?.user_current?.[0]?.bot || false;
 
   const {
     data: pickedUserFromDataChannelResponse,
@@ -105,6 +110,7 @@ function PickRandomUserPlugin({ pluginApi, intl }: PickRandomUserPluginProps) {
   if (!pickedUserWithEntryId) return null;
   return !shouldPluginUnmount && (
     <PickUserModal
+      isBot={isBot}
       {...{
         intl,
         showModal,

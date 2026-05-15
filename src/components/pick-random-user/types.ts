@@ -8,6 +8,7 @@ export interface PickedUser {
     name: string;
     role: string;
     color: string;
+    bot: boolean;
 }
 
 export interface PickedUserWithEntryId {
@@ -40,4 +41,12 @@ export interface DataChannelPickedUserResponse {
 
 export interface DataChannelLastResetTimeResponse {
     pluginDataChannelMessage: DataChannelArrayMessages<Date>[];
+}
+
+export interface BotData {
+  bot: boolean
+}
+
+export interface BotDataWrapper {
+  user_current: BotData[];
 }
