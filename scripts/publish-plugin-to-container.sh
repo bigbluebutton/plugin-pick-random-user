@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Copies the built plugin (dist/) into the running BBB Docker container.
-# Usage:  ./scripts/copy-plugin-to-container.sh [containerName]
+# Usage:  ./scripts/publish-plugin-to-container.sh [containerName]
 #
 # containerName defaults to $LOCAL_CONTAINER_NAME from .env when omitted.
 

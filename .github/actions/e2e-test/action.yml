@@ -1,0 +1,92 @@
+name: Build, publish & run E2E tests
+description: >
+  Installs dependencies, builds the plugin, publishes the dist to S3,
+  and runs the full Playwright E2E suite against a live BBB server.
+
+inputs:
+  s3_access_key:
+    description: 'S3 access key ID'
+    required: true
+  s3_secret_key:
+    description: 'S3 secret access key'
+    required: true
+  s3_endpoint_url:
+    description: 'S3 endpoint URL'
+    required: true
+  s3_bucket:
+    description: 'S3 bucket name'
+    required: true
+  s3_path:
+    description: 'Path prefix inside the S3 bucket (computed by the caller)'
+    required: true
+  bbb_url:
+    description: 'BigBlueButton server API URL (must end with /bigbluebutton/)'
+    required: true
+  bbb_secret:
+    description: 'BigBlueButton server shared secret'
+    required: true
+
+runs:
+  using: composite
+  steps:
+    # ── Step 1: Build ──────────────────────────────────────────────────────────
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Build plugin
+      shell: bash
+      run: npm run build-bundle
+
+    # ── Step 2: Publish to S3 ──────────────────────────────────────────────────
+
+    - name: Publish plugin to S3
+      shell: bash
+      env:
+        S3_ACCESS_KEY:   ${{ inputs.s3_access_key }}
+        S3_SECRET_KEY:   ${{ inputs.s3_secret_key }}
+        S3_ENDPOINT_URL: ${{ inputs.s3_endpoint_url }}
+        S3_BUCKET:       ${{ inputs.s3_bucket }}
+        S3_PATH:         ${{ inputs.s3_path }}
+      run: bash scripts/publish-plugin-to-s3.sh
+
+    # ── Step 3: Run tests ──────────────────────────────────────────────────────
+
+    - name: Install Playwright browsers
+      shell: bash
+      run: npx playwright install chromium --with-deps
+
+    - name: Run E2E tests
+      shell: bash
+      env:
+        CI: 'true'
+        BBB_URL:                     ${{ inputs.bbb_url }}
+        BBB_SECRET:                  ${{ inputs.bbb_secret }}
+        PICK_RANDOM_USER_PLUGIN_URL: ${{ inputs.s3_endpoint_url }}/${{ inputs.s3_bucket }}/${{ inputs.s3_path }}/manifest.json
+        TIMEOUT_MULTIPLIER:          '2'
+      run: npm run test-chromium-ci
+
+    # ── Artifacts ──────────────────────────────────────────────────────────────
+
+    - name: Upload Playwright HTML report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Upload blob report
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: blob-report
+        path: blob-report/
+        retention-days: 10
