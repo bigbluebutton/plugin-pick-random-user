@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { DataChannelTypes, RESET_DATA_CHANNEL } from 'bigbluebutton-html-plugin-sdk';
 import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
+import { BBButton } from '@mconf/bbb-ui-components-react';
 
 import { USERS_MORE_INFORMATION } from './queries';
 import { PickedUser, UsersMoreInformationGraphqlResponse } from '../pick-random-user/types';
@@ -175,18 +176,16 @@ export function PickRandomUserPanelComponent(props: PickRandomUserPanelComponent
       if (usersToBePicked?.length > 0) {
         return (
           <Styled.PickRandomUserButtonWrapper>
-            <Styled.PickRandomUserButton
-              type="button"
-              onClick={() => {
-                handlePickRandomUser();
-              }}
-            >
-              {
-              (pickedUserFromDataChannel?.data?.length > 0)
-                ? intl.formatMessage(intlMessages.pickRandomUserButtonLabelAgain)
-                : intl.formatMessage(intlMessages.pickRandomUserButtonLabelRole, { 0: userRole })
+            <BBButton
+              variant="primary"
+              color="default"
+              label={
+                (pickedUserFromDataChannel?.data?.length > 0)
+                  ? intl.formatMessage(intlMessages.pickRandomUserButtonLabelAgain)
+                  : intl.formatMessage(intlMessages.pickRandomUserButtonLabelRole, { 0: userRole })
               }
-            </Styled.PickRandomUserButton>
+              onClick={handlePickRandomUser}
+            />
           </Styled.PickRandomUserButtonWrapper>
         );
       }
@@ -297,14 +296,12 @@ export function PickRandomUserPanelComponent(props: PickRandomUserPanelComponent
             {intl.formatMessage(intlMessages.previouslyPicked)}
           </Styled.PanelSubTitle>
           {currentUser?.presenter && pickedUserFromDataChannel?.data?.length > 0 && (
-            <Styled.CleanAllButton
-              type="button"
-              onClick={() => {
-                deletePickedUser([RESET_DATA_CHANNEL]);
-              }}
-            >
-              {intl.formatMessage(intlMessages.clearAll)}
-            </Styled.CleanAllButton>
+            <BBButton
+              variant="subtle"
+              color="default"
+              label={intl.formatMessage(intlMessages.clearAll)}
+              onClick={() => deletePickedUser([RESET_DATA_CHANNEL])}
+            />
           )}
         </Styled.AlreadyPickedWarpper>
         <Styled.ScrollboxVertical>

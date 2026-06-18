@@ -74,21 +74,6 @@ const AlreadyPickedWarpper = styled.div`
   align-items: center;
 `;
 
-const CleanAllButton = styled.button`
-  padding: 1px 10px;
-  margin-left: 8px;
-  font-size: 15px;
-  background: #efefef;
-  border: none;
-  color: inherit;
-  border-radius: 8px;
-  cursor: pointer;
-
-  &:hover {
-    background-color: #ddd;
-  }
-`;
-
 const MaterialSwitch = materialStyled(Switch)(({ theme }) => ({
   width: '2.3rem',
   height: '1.2rem',
@@ -137,19 +122,10 @@ const MaterialSwitch = materialStyled(Switch)(({ theme }) => ({
 const PickRandomUserButtonWrapper = styled.div`
   width: 100%;
   display: flex;
-  justify-content: center;
-`;
 
-const PickRandomUserButton = styled.button`
-  background-color: ${colorPrimary};
-  border: none;
-  border-radius: 1rem;
-  cursor: pointer;
-  font-size: 0.8rem;
-  color: ${colorWhite};
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  font-weight: 600;
+  > * {
+    width: 100%;
+  }
 `;
 
 const ScrollboxVertical = styled.div`
@@ -201,9 +177,7 @@ export default {
   OptionContainer,
   OptionLabel,
   AlreadyPickedWarpper,
-  CleanAllButton,
   MaterialSwitch,
   PickRandomUserButtonWrapper,
-  PickRandomUserButton,
   ScrollboxVertical,
 };
