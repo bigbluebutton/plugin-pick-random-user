@@ -8,6 +8,7 @@ import { PickedUser } from '../../pick-random-user/types';
 import { PresenterViewComponentProps } from './types';
 import { UserAvatar } from '../user-avatar/component';
 import { useGetPickRandomUserFunction, useGetPossibleUsersToBePicked } from './hooks';
+import { formatPickedTime } from './utils';
 
 const intlMessages = defineMessages({
   filterChipsLabel: {
@@ -140,18 +141,13 @@ function CheckboxSquare({ active }: { active: boolean }) {
 }
 
 function makePickedUserRows(list?: DataChannelEntryResponseType<PickedUser>[]) {
-  return list?.filter((u) => !!u.payloadJson).map((u) => {
-    const time = new Date(u.createdAt);
-    const hh = String(time.getHours()).padStart(2, '0');
-    const mm = String(time.getMinutes()).padStart(2, '0');
-    return (
-      <Styled.PickedUserRow key={`${u.payloadJson.userId}-${time.getTime()}`}>
-        <UserAvatar user={u.payloadJson} size="small" />
-        <Styled.UserNameText>{u.payloadJson.name}</Styled.UserNameText>
-        <Styled.PickedTimeText>{`${hh}:${mm}`}</Styled.PickedTimeText>
-      </Styled.PickedUserRow>
-    );
-  });
+  return list?.filter((u) => !!u.payloadJson).map((u) => (
+    <Styled.PickedUserRow key={`${u.payloadJson.userId}-${new Date(u.createdAt).getTime()}`}>
+      <UserAvatar user={u.payloadJson} size="small" />
+      <Styled.UserNameText>{u.payloadJson.name}</Styled.UserNameText>
+      <Styled.PickedTimeText>{formatPickedTime(u.createdAt)}</Styled.PickedTimeText>
+    </Styled.PickedUserRow>
+  ));
 }
 
 export function PresenterViewComponent(props: PresenterViewComponentProps) {

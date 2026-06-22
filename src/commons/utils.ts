@@ -20,4 +20,4 @@ export const hasCurrentUserSeenPickedUser = (
     && view.payloadJson.seenByUserId === currentUserId
     && view.payloadJson.pickedUserId === pickedUserId));
 
-export const isNumber = (obj: unknown): boolean => obj && typeof obj && !Number.isNaN(obj);
+export const isNumber = (obj: unknown): boolean => typeof obj === 'number' && !Number.isNaN(obj);

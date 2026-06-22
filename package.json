@@ -26,6 +26,8 @@
     "lint": "eslint ./src/*",
     "lint:fix": "npm run lint -- --fix",
     "lint:watch": "watch 'yarn lint'",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "publish-plugin:dev": "bash scripts/copy-plugin-to-container.sh",
     "test": "npx playwright test",
     "test:isolated": "TEST_MEETINGS=isolated npx playwright test",
@@ -44,6 +46,10 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "jsdom": "^25.0.1",
+    "vitest": "^3.2.6",
     "@types/xml2js": "^0.4.14",
     "@playwright/test": "^1.51.1",
     "@types/sha.js": "^2.4.4",

@@ -64,7 +64,7 @@ export const getBrowserNotificationEnabled = (
   } return !!settings.browserNotificationEnabled;
 };
 
-const getPickedUserTimeWindowFromSettings = (settings: PluginSettingsData) => {
+export const getPickedUserTimeWindowFromSettings = (settings: PluginSettingsData) => {
   const settingTimeWindow = settings.pickedUserTimeWindow as unknown;
   if (isNumber(settingTimeWindow)) {
     const timeWindow: number = settingTimeWindow as number;
@@ -72,7 +72,7 @@ const getPickedUserTimeWindowFromSettings = (settings: PluginSettingsData) => {
   } return PICKED_USER_TIME_WINDOW;
 };
 
-const getPingSoundUrl = (settings: PluginSettingsData): string => {
+export const getPingSoundUrl = (settings: PluginSettingsData): string => {
   const { cdn, basename } = window.meetingClientSettings.public.app;
   const host = cdn + basename;
   const pingSoundUrl: string = settings.pingSoundUrl
@@ -81,7 +81,7 @@ const getPingSoundUrl = (settings: PluginSettingsData): string => {
   return pingSoundUrl;
 };
 
-const getPreventCloseDelayFromSettings = (settings: PluginSettingsData) => {
+export const getPreventCloseDelayFromSettings = (settings: PluginSettingsData) => {
   const settingPreventCloseDelay = settings.preventCloseDelaySeconds as unknown;
   if (isNumber(settingPreventCloseDelay)) {
     const delay: number = settingPreventCloseDelay as number;

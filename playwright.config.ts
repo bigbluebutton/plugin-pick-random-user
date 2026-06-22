@@ -4,6 +4,8 @@ import { server } from './tests/core/parameters';
 
 export default defineConfig({
   testDir: process.cwd(),
+  // Vitest unit tests live under tests/unit and must not be collected by Playwright.
+  testIgnore: ['**/tests/unit/**'],
   workers: CI ? 1 : undefined,
   retries: CI ? 1 : 0,
   fullyParallel: true,
