@@ -10,7 +10,7 @@ const PluginModal = styled(ReactModal)`
   display: flex;
   flex-direction: column;
   background-color: #fff !important;
-  width: 25rem;
+  width: 32rem;
   max-width: 95vw;
   max-height: 90vh;
   border-radius: 0.5rem;
@@ -48,24 +48,24 @@ const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem 0.875rem;
+  padding: 1.25rem 1.5rem 1.125rem;
   border-bottom: 1px solid #E8EDF2;
   flex-shrink: 0;
 `;
 
 const ModalTitle = styled.span`
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: 1.55rem;
   color: #1C2B3A;
 `;
 
 const CloseButton = styled.button`
-  font-size: 1rem;
+  font-size: 1.3rem;
   background: none;
   color: #8B9AAF;
   border: none;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: 0.375rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,16 +102,16 @@ const FloatingToast = styled.div<{ $exiting: boolean }>`
   margin-top: 10px;
   width: fit-content;
   white-space: nowrap;
-  padding: 10px 16px;
+  padding: 12px 20px;
   border-radius: 10px;
   background-color: #fff;
   border: 0.5px solid #E8EDF2;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-family: 'Source Sans Pro', Arial, sans-serif;
-  font-size: 13px;
+  font-size: 17px;
   color: #6c757d;
   pointer-events: none;
   ${({ $exiting }) => css`

@@ -10,39 +10,39 @@ const PickedUserViewBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.2rem;
+  padding: 1.5rem;
 `;
 
 const PickedUserViewFooter = styled.div`
-  padding: 0 1.25rem 1rem;
+  padding: 0 1.5rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 `;
 
 const ResultSectionLabel = styled.span`
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 800;
   color: #8B9AAF;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 `;
 
 const PickedUserName = styled.p`
-  font-size: 1.875rem;
+  font-size: 2.625rem;
   font-weight: 500;
-  margin: 1rem 0;
+  margin: 1.25rem 0;
 `;
 
 const BackButton = styled.button`
   width: 100%;
-  padding: 0.625rem 0;
+  padding: 0.875rem 0;
   background: #4E7FF8;
   color: #fff;
   border: none;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: 1.125rem;
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;
