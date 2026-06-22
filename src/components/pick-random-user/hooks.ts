@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import {
   DEFAULT_PING_SOUND_URL,
   DEFAULT_PREVENT_CLOSE_DELAY_SECONDS,
+  DEFAULT_MODAL_UI_SCALE,
   PICKED_USER_TIME_WINDOW,
 } from '../../commons/constants';
 import { hasCurrentUserSeenPickedUser, isNumber } from '../../commons/utils';
@@ -89,6 +90,14 @@ const getPreventCloseDelayFromSettings = (settings: PluginSettingsData) => {
   } return DEFAULT_PREVENT_CLOSE_DELAY_SECONDS;
 };
 
+const getSizeMultiplierFromSettings = (settings: PluginSettingsData) => {
+  const settingSizeMultiplier = settings.modalUiScale as unknown;
+  if (isNumber(settingSizeMultiplier)) {
+    const multiplier: number = settingSizeMultiplier as number;
+    return multiplier;
+  } return DEFAULT_MODAL_UI_SCALE;
+};
+
 export const useGetAllSettings = (
   settingsData: GraphqlResponseWrapper<PluginSettingsData>,
 ): PickRandomUserSettings => {
@@ -101,6 +110,7 @@ export const useGetAllSettings = (
   const [preventCloseDelaySeconds, setPreventCloseDelaySeconds] = useState<number>(
     DEFAULT_PREVENT_CLOSE_DELAY_SECONDS,
   );
+  const [modalUiScale, setModalUiScale] = useState<number>(DEFAULT_MODAL_UI_SCALE);
   useSettingsLoaded((settings) => {
     setBrowserNotificationEnabled(
       (previousState) => getBrowserNotificationEnabled(settings, previousState),
@@ -111,6 +121,7 @@ export const useGetAllSettings = (
     setPickedUserTimeWindow(getPickedUserTimeWindowFromSettings(settings));
     setPingSoundUrl(getPingSoundUrl(settings));
     setPreventCloseDelaySeconds(getPreventCloseDelayFromSettings(settings));
+    setModalUiScale(getSizeMultiplierFromSettings(settings));
   }, settingsData);
   return {
     pingSoundEnabled,
@@ -118,6 +129,7 @@ export const useGetAllSettings = (
     browserNotificationEnabled,
     pickedUserTimeWindow,
     preventCloseDelaySeconds,
+    modalUiScale,
   };
 };
 
