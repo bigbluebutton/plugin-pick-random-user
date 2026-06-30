@@ -9,7 +9,7 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: CI,
   reporter: CI
-    ? [['blob'], ['./core/setup/customReporter.ts']]
+    ? [['list'], ['blob']]
     : [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: server,
