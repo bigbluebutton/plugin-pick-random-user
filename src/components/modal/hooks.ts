@@ -181,7 +181,7 @@ const useUpdateFilterOptionsOnDataChannel = (
   }, [isPresenter, filterOptions, dataChannelLoading, hasDataChannelBeenApplied]);
 };
 
-const hasFilterOptionsChanged = (
+export const hasFilterOptionsChanged = (
   currentFilterOptions: FilterOptionsType,
   filterOptionsFromDataChannel?: FilterOptionsType,
 ) => filterOptionsFromDataChannel?.includePickedUsers !== currentFilterOptions.includePickedUsers
@@ -209,7 +209,7 @@ const useObserveFilterOptionsFromDataChannel = (
   }, [filterOptionsFromDataChannel, dataChannelLoading]);
 };
 
-const getLatestFilterOptionsFromDataChannel = (
+export const getLatestFilterOptionsFromDataChannel = (
   filterOptionsFromDataChannelResponse: GraphqlResponseWrapper<
     DataChannelEntryResponseType<FilterOptionsType>[]
   >,

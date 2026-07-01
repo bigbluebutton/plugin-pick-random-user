@@ -11,9 +11,6 @@
         "moduleResolution": "node"
     },
     "include": ["src/*", "public/locales/*"],
-    "paths": {
-        "*": ["node_modules"]
-    },
     "exclude": [
         "node_modules"
     ]

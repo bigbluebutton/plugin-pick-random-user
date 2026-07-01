@@ -25,3 +25,16 @@ export const filterPossibleUsersToBePicked = (
     return true;
   }) || [],
 });
+
+/**
+ * Formats the moment a user was picked as a zero-padded local `HH:mm` label,
+ * used in the "previously picked" list of the presenter view.
+ * @param createdAt timestamp of the pick (anything accepted by the Date constructor)
+ * @returns the local time as `HH:mm`
+ */
+export const formatPickedTime = (createdAt: string | number | Date): string => {
+  const time = new Date(createdAt);
+  const hh = String(time.getHours()).padStart(2, '0');
+  const mm = String(time.getMinutes()).padStart(2, '0');
+  return `${hh}:${mm}`;
+};

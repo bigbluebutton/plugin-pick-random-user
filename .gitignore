@@ -12,3 +12,4 @@ memory
 playwright-report
 test-results
 .env
+coverage/*

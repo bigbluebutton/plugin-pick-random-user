@@ -1,10 +1,10 @@
-name: Typescript - validate code (eslint)
+name: Unit tests
 on: [pull_request]
 
 permissions:
   contents: read
 jobs:
-  ts-code-validation:
+  unit-tests:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -18,5 +18,11 @@ jobs:
           node-version-file: '.nvmrc'
       - name: run npm install
         run: npm install
-      - name: typescript code validation with eslint
-        run: npm run lint
+      - name: run unit tests
+        run: npm run test:unit:coverage
+      - name: Upload coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
