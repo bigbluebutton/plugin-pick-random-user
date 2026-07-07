@@ -6,7 +6,7 @@
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
-    "@mconf/bbb-ui-components-react": "2.1.0",
+    "@mconf/bbb-ui-components-react": "2.3.0",
     "@mui/icons-material": "7.3.1",
     "@mui/material": "7.3.1",
     "@testing-library/react": "^13.4.0",
