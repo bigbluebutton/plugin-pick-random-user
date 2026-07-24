@@ -1,7 +1,9 @@
+import { useEffect } from 'react';
 import {
   PluginApi,
   RESET_DATA_CHANNEL,
   UsersBasicInfoData,
+  pluginLogger,
 } from 'bigbluebutton-html-plugin-sdk';
 import {
   FilterOptionsType,
@@ -46,17 +48,54 @@ export function useGetPossibleUsersToBePicked(
 ) {
   const allUsersInfo = pluginApi?.useUsersBasicInfo
     ? pluginApi?.useUsersBasicInfo()
-    : { data: undefined as undefined };
+    : { data: undefined as undefined, loading: false, error: undefined };
   const { data: allUsers } = allUsersInfo;
+
+  // TEMPORARY DEBUG INSTRUMENTATION — investigating an "unstable connection empties
+  // the available-users list" report. Remove once diagnosed.
+  useEffect(() => {
+    pluginLogger.debug({
+      logCode: 'pick_random_user_debug_users_basic_info',
+      extraInfo: {
+        timestamp: new Date().toISOString(),
+        loading: allUsersInfo.loading,
+        hasError: !!allUsersInfo.error,
+        userCount: allUsers?.user?.length,
+        users: allUsers?.user?.map((u) => ({
+          userId: u.userId,
+          name: u.name,
+          role: u.role,
+          isModerator: u.isModerator,
+          presenter: u.presenter,
+          bot: u.bot,
+        })),
+      },
+    }, '[DEBUG pick-random-user] useUsersBasicInfo update');
+  }, [allUsersInfo]);
 
   const {
     data: pickedUserFromDataChannelResponse,
   } = pluginApi.useDataChannel<PickedUser>('pickRandomUser');
   const pickedUserFromDataChannel = pickedUserFromDataChannelResponse?.data || [];
 
-  return filterPossibleUsersToBePicked(
+  const result = filterPossibleUsersToBePicked(
     allUsers,
     pickedUserFromDataChannel,
     filterOptions,
   ).user;
+
+  // TEMPORARY DEBUG INSTRUMENTATION — see above.
+  useEffect(() => {
+    pluginLogger.debug({
+      logCode: 'pick_random_user_debug_filtered_result',
+      extraInfo: {
+        timestamp: new Date().toISOString(),
+        resultCount: result.length,
+        resultUserIds: result.map((u) => u.userId),
+        filterOptions,
+      },
+    }, '[DEBUG pick-random-user] usersToBePicked recomputed');
+  }, [result, filterOptions]);
+
+  return result;
 }
