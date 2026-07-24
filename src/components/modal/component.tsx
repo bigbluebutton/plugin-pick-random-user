@@ -2,13 +2,23 @@ import {
   useCallback, useEffect, useRef, useState,
 } from 'react';
 import * as React from 'react';
-import { defineMessages } from 'react-intl';
+import { defineMessages, IntlShape } from 'react-intl';
+import {
+  CurrentUserData,
+  DataChannelEntryResponseType,
+  DeleteEntryFunction,
+  GraphqlResponseWrapper,
+  PluginApi,
+  PushEntryFunction,
+} from 'bigbluebutton-html-plugin-sdk';
 import * as Styled from './styles';
-import { PickUserModalProps } from './types';
+import { FilterOptionsType, PickUserModalProps } from './types';
 import { PickedUserViewComponent } from './picked-user-view/component';
 import { PresenterViewComponent } from './presenter-view/component';
+import { useGetPossibleUsersToBePicked } from './presenter-view/hooks';
 import { useGetFilterOptions, useHandleCurrentUserNotification, usePreventCloseModalCountdown } from './hooks';
 import { MIN_PREVENT_CLOSE_DELAY_FOR_TOAST_SECONDS } from '../../commons/constants';
+import { PickedUser, PickedUserWithEntryId, PickedUserSeenEntryDataChannel } from '../pick-random-user/types';
 
 const intlMessages = defineMessages({
   currentUserPicked: {
@@ -42,6 +52,88 @@ const intlMessages = defineMessages({
     defaultMessage: 'You can close this modal in {ms}ms',
   },
 });
+
+interface PresenterModalContentProps {
+  showPresenterView: boolean;
+  pluginApi: PluginApi;
+  filterOptions: FilterOptionsType;
+  setFilterOptions: React.Dispatch<React.SetStateAction<FilterOptionsType>>;
+  deletionFunction: DeleteEntryFunction;
+  dataChannelPickedUsers: DataChannelEntryResponseType<PickedUser>[] | undefined;
+  pickedUserWithEntryId: PickedUserWithEntryId | null;
+  intl: IntlShape;
+  currentUser: CurrentUserData;
+  pickedUserSeenEntries: GraphqlResponseWrapper<
+    DataChannelEntryResponseType<PickedUserSeenEntryDataChannel>[]>;
+  pushPickedUserSeen: PushEntryFunction<PickedUserSeenEntryDataChannel>;
+  setShowPresenterView: React.Dispatch<React.SetStateAction<boolean>>;
+  remainingSeconds: number;
+  canClose: boolean;
+}
+
+// Kept mounted for as long as the presenter has the modal open, regardless of whether
+// they are looking at the presenter view or the just-picked-user view. This keeps the
+// useUsersBasicInfo subscription (and its loading state) alive across picks instead of
+// tearing it down and recreating it every time the presenter picks someone, which used
+// to cause the "Available for selection" list to flash back into a loading state on
+// every pick. The subscription still dies normally when the modal closes or the
+// component stops rendering (e.g. the user is no longer the presenter).
+function PresenterModalContent(props: PresenterModalContentProps) {
+  const {
+    showPresenterView,
+    pluginApi,
+    filterOptions,
+    setFilterOptions,
+    deletionFunction,
+    dataChannelPickedUsers,
+    pickedUserWithEntryId,
+    intl,
+    currentUser,
+    pickedUserSeenEntries,
+    pushPickedUserSeen,
+    setShowPresenterView,
+    remainingSeconds,
+    canClose,
+  } = props;
+
+  const { users: usersToBePicked, isLoading } = useGetPossibleUsersToBePicked(
+    pluginApi,
+    filterOptions,
+  );
+
+  if (showPresenterView) {
+    return (
+      <PresenterViewComponent
+        {...{
+          intl,
+          filterOptions,
+          setFilterOptions,
+          deletionFunction,
+          dataChannelPickedUsers,
+          pluginApi,
+          pickedUserWithEntryId,
+          usersToBePicked,
+          isLoading,
+        }}
+      />
+    );
+  }
+
+  return (
+    <PickedUserViewComponent
+      {...{
+        pickedUserSeenEntries,
+        pushPickedUserSeen,
+        pickedUserWithEntryId,
+        intl,
+        currentUser,
+        setShowPresenterView,
+        remainingSeconds,
+        canClose,
+      }}
+    />
+  );
+}
 
 function OverlayWithToast({
   overlayProps,
@@ -216,17 +308,24 @@ export function PickUserModal(props: PickUserModalProps) {
         </Styled.CloseButton>
       </Styled.ModalHeader>
       {
-        showPresenterView
+        isPresenter
           ? (
-            <PresenterViewComponent
+            <PresenterModalContent
               {...{
-                intl,
+                showPresenterView,
+                pluginApi,
                 filterOptions,
                 setFilterOptions,
                 deletionFunction,
                 dataChannelPickedUsers,
-                pluginApi,
                 pickedUserWithEntryId: currentPickedUser,
+                intl,
+                currentUser,
+                pickedUserSeenEntries,
+                pushPickedUserSeen,
+                setShowPresenterView,
+                remainingSeconds,
+                canClose,
               }}
             />
           ) : (

@@ -7,7 +7,7 @@ import * as Styled from './styles';
 import { PickedUser } from '../../pick-random-user/types';
 import { PresenterViewComponentProps } from './types';
 import { UserAvatar } from '../user-avatar/component';
-import { useGetPickRandomUserFunction, useGetPossibleUsersToBePicked } from './hooks';
+import { useGetPickRandomUserFunction } from './hooks';
 import { formatPickedTime } from './utils';
 
 const intlMessages = defineMessages({
@@ -164,6 +164,8 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     pluginApi,
     filterOptions,
     setFilterOptions,
+    usersToBePicked,
+    isLoading,
   } = props;
 
   const {
@@ -171,11 +173,6 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     includePresenter,
     includePickedUsers,
   } = filterOptions;
-
-  const { users: usersToBePicked, isLoading } = useGetPossibleUsersToBePicked(
-    pluginApi,
-    filterOptions,
-  );
 
   const handlePickRandomUser = useGetPickRandomUserFunction(pluginApi, usersToBePicked);
 
