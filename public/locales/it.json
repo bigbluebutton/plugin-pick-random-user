@@ -27,6 +27,7 @@
   "pickRandomUserPlugin.modal.title": "Scegli un utente casuale",
   "pickRandomUserPlugin.modal.closeButton.ariaLabel": "Chiudi",
   "pickRandomUserPlugin.modal.presenterView.availableSection.emptyState": "Nessun {0} disponibile per la selezione",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.loading": "Caricamento…",
   "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.emptyState": "Nessun utente selezionato ancora",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.moderator": "moderatore",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.presenter": "presentatore",

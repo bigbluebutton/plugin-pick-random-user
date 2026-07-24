@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 // ── Section labels ────────────────────────────────────────────────────────────
 
@@ -160,6 +160,38 @@ const EmptyStateText = styled.span`
   color: #A7B3C3;
 `;
 
+// ── Loading state (shown while the first user snapshot has not arrived yet) ────
+
+const spin = keyframes`
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+`;
+
+const LoadingContainer = styled.div`
+  background: #F7F9FB;
+  border-radius: 0.375rem;
+  padding: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+const SpinnerRing = styled.span`
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 2px solid #D1D9E3;
+  border-top-color: #4E7FF8;
+  animation: ${spin} 0.7s linear infinite;
+  flex-shrink: 0;
+`;
+
+const LoadingText = styled.span`
+  font-size: 0.8125rem;
+  color: #A7B3C3;
+`;
+
 const PickedUserListContainer = styled(UserListContainer)`
 `;
 
@@ -258,6 +290,9 @@ export {
   ClearAllButton,
   EmptyStateContainer,
   EmptyStateText,
+  LoadingContainer,
+  SpinnerRing,
+  LoadingText,
   PickedUserListContainer,
   PickedList,
   PickedUserRow,

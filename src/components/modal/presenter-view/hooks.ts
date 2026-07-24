@@ -49,7 +49,14 @@ export function useGetPossibleUsersToBePicked(
   const allUsersInfo = pluginApi?.useUsersBasicInfo
     ? pluginApi?.useUsersBasicInfo()
     : { data: undefined as undefined, loading: false, error: undefined };
-  const { data: allUsers } = allUsersInfo;
+  const { data: allUsers, loading } = allUsersInfo;
+
+  // This plugin relies on *live* data: the presenter must never pick someone who has
+  // already left. So we deliberately do NOT retain the previous snapshot — while the
+  // SDK is (re)fetching or has no data yet, we report loading instead of a possibly
+  // stale list. The footer hides the Pick button whenever isLoading is true, so the
+  // presenter cannot act on data we are not sure is current.
+  const isLoading = loading || allUsers === undefined;
 
   // TEMPORARY DEBUG INSTRUMENTATION — investigating an "unstable connection empties
   // the available-users list" report. Remove once diagnosed.
@@ -97,5 +104,5 @@ export function useGetPossibleUsersToBePicked(
     }, '[DEBUG pick-random-user] usersToBePicked recomputed');
   }, [result, filterOptions]);
 
-  return result;
+  return { users: result, isLoading };
 }
