@@ -1,7 +1,7 @@
 {
   "requiredSdkVersion": "~0.0.92",
   "name": "BbbPluginPickRandomUser",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "javascriptEntrypointUrl": "BbbPluginPickRandomUser.js",
   "localesBaseUrl": "locales",
   "dataChannels": [
