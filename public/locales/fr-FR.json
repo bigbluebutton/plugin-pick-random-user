@@ -27,6 +27,7 @@
   "pickRandomUserPlugin.modal.title": "Sélectionner un participant au hasard",
   "pickRandomUserPlugin.modal.closeButton.ariaLabel": "Fermer",
   "pickRandomUserPlugin.modal.presenterView.availableSection.emptyState": "Aucun {0} disponible pour la sélection",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.loading": "Chargement…",
   "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.emptyState": "Aucun participant sélectionné pour l'instant",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.moderator": "modérateur",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.presenter": "présentateur",

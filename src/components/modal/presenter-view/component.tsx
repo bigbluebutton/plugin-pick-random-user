@@ -7,7 +7,7 @@ import * as Styled from './styles';
 import { PickedUser } from '../../pick-random-user/types';
 import { PresenterViewComponentProps } from './types';
 import { UserAvatar } from '../user-avatar/component';
-import { useGetPickRandomUserFunction, useGetPossibleUsersToBePicked } from './hooks';
+import { useGetPickRandomUserFunction } from './hooks';
 import { formatPickedTime } from './utils';
 
 const intlMessages = defineMessages({
@@ -96,6 +96,11 @@ const intlMessages = defineMessages({
     description: 'Empty state text shown when no user is available for selection',
     defaultMessage: 'No {0} available for selection',
   },
+  availableLoading: {
+    id: 'pickRandomUserPlugin.modal.presenterView.availableSection.loading',
+    description: 'Loading text shown while the list of users is still being fetched',
+    defaultMessage: 'Loading…',
+  },
   moderatorRoleLabel: {
     id: 'pickRandomUserPlugin.modal.presenterView.roleLabel.moderator',
     description: 'Role badge label for moderators',
@@ -159,6 +164,8 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     pluginApi,
     filterOptions,
     setFilterOptions,
+    usersToBePicked,
+    isLoading,
   } = props;
 
   const {
@@ -166,8 +173,6 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
     includePresenter,
     includePickedUsers,
   } = filterOptions;
-
-  const usersToBePicked = useGetPossibleUsersToBePicked(pluginApi, filterOptions);
 
   const handlePickRandomUser = useGetPickRandomUserFunction(pluginApi, usersToBePicked);
 
@@ -262,13 +267,22 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
               {userRoleLabel}
             </Styled.CountBadge>
           </Styled.SectionHeaderRow>
-          {usersCount === 0 ? (
+          {isLoading && (
+            <Styled.LoadingContainer data-test="pickRandomUserAvailableLoading">
+              <Styled.SpinnerRing />
+              <Styled.LoadingText>
+                {intl.formatMessage(intlMessages.availableLoading)}
+              </Styled.LoadingText>
+            </Styled.LoadingContainer>
+          )}
+          {!isLoading && usersCount === 0 && (
             <Styled.EmptyStateContainer>
               <Styled.EmptyStateText>
                 {intl.formatMessage(intlMessages.availableEmptyState, { 0: userRoleLabel })}
               </Styled.EmptyStateText>
             </Styled.EmptyStateContainer>
-          ) : (
+          )}
+          {!isLoading && usersCount > 0 && (
             <Styled.UserListContainer>
               {usersToBePicked?.map((user) => {
                 let roleBadgeLabel: string | null = null;
@@ -328,7 +342,12 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
 
       {/* FOOTER */}
       <Styled.FooterContainer>
-        {usersCount > 0 ? (
+        {isLoading && (
+          <Styled.NoUsersWarning data-test="pickRandomUserLoadingWarning">
+            {intl.formatMessage(intlMessages.availableLoading)}
+          </Styled.NoUsersWarning>
+        )}
+        {!isLoading && usersCount > 0 && (
           <Styled.PickButton
             type="button"
             data-test="pickRandomUserPickButton"
@@ -340,7 +359,8 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
                 : intlMessages.pickAnotherRandomUserButtonLabel)
               : intl.formatMessage(intlMessages.pickButtonLabel)}
           </Styled.PickButton>
-        ) : (
+        )}
+        {!isLoading && usersCount === 0 && (
           <Styled.NoUsersWarning data-test="pickRandomUserNoUsersWarning">
             {intl.formatMessage(intlMessages.noUsersWarning, { 0: userRoleLabel })}
           </Styled.NoUsersWarning>

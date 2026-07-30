@@ -28,6 +28,7 @@
   "pickRandomUserPlugin.modal.title": "ランダムにユーザーを選択",
   "pickRandomUserPlugin.modal.closeButton.ariaLabel": "閉じる",
   "pickRandomUserPlugin.modal.presenterView.availableSection.emptyState": "選択可能な{0}はいません",
+  "pickRandomUserPlugin.modal.presenterView.availableSection.loading": "読み込み中…",
   "pickRandomUserPlugin.modal.presenterView.previouslyPickedSection.emptyState": "まだユーザーが選択されていません",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.moderator": "モデレーター",
   "pickRandomUserPlugin.modal.presenterView.roleLabel.presenter": "発表者",
