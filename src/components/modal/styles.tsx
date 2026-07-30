@@ -1,7 +1,10 @@
 import * as ReactModal from 'react-modal';
 import styled, { css, keyframes } from 'styled-components';
 
-const PluginModal = styled(ReactModal)`
+const s = (val: number, unit = 'rem') => `calc(${val}${unit} * var(--pru-sm, 1))`;
+
+const PluginModal = styled(ReactModal)<{ $modalUiScale?: number }>`
+  --pru-sm: ${({ $modalUiScale }) => $modalUiScale ?? 1};
   position: relative;
   z-index: 1000 !important;
   outline: transparent;
@@ -10,7 +13,7 @@ const PluginModal = styled(ReactModal)`
   display: flex;
   flex-direction: column;
   background-color: #fff !important;
-  width: 25rem;
+  width: ${s(32)};
   max-width: 95vw;
   max-height: 90vh;
   border-radius: 0.5rem;
@@ -48,24 +51,24 @@ const ModalHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 1.25rem 0.875rem;
+  padding: ${s(1.25)} ${s(1.5)} ${s(1.125)};
   border-bottom: 1px solid #E8EDF2;
   flex-shrink: 0;
 `;
 
 const ModalTitle = styled.span`
   font-weight: 600;
-  font-size: 1.15rem;
+  font-size: ${s(1.55)};
   color: #1C2B3A;
 `;
 
 const CloseButton = styled.button`
-  font-size: 1rem;
+  font-size: ${s(1.3)};
   background: none;
   color: #8B9AAF;
   border: none;
   cursor: pointer;
-  padding: 0.25rem;
+  padding: ${s(0.375)};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -99,19 +102,19 @@ const FloatingToast = styled.div<{ $exiting: boolean }>`
   top: 100%;
   left: 50%;
   transform: translateX(-50%);
-  margin-top: 10px;
+  margin-top: ${s(10, 'px')};
   width: fit-content;
   white-space: nowrap;
-  padding: 10px 16px;
+  padding: ${s(12, 'px')} ${s(20, 'px')};
   border-radius: 10px;
   background-color: #fff;
   border: 0.5px solid #E8EDF2;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: ${s(10, 'px')};
   font-family: 'Source Sans Pro', Arial, sans-serif;
-  font-size: 13px;
+  font-size: ${s(17, 'px')};
   color: #6c757d;
   pointer-events: none;
   ${({ $exiting }) => css`

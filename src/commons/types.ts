@@ -4,4 +4,5 @@ export interface PickRandomUserSettings {
   browserNotificationEnabled: boolean;
   pickedUserTimeWindow: number;
   preventCloseDelaySeconds: number;
+  modalUiScale: number;
 }

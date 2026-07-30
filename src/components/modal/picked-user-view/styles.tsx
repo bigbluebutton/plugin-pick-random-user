@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 
+const s = (val: number, unit = 'rem') => `calc(${val}${unit} * var(--pru-sm, 1))`;
+
 const PickedUserViewWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -10,39 +12,39 @@ const PickedUserViewBody = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.2rem;
+  padding: ${s(1.5)};
 `;
 
 const PickedUserViewFooter = styled.div`
-  padding: 0 1.25rem 1rem;
+  padding: 0 ${s(1.5)} ${s(1.25)};
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: ${s(0.75)};
 `;
 
 const ResultSectionLabel = styled.span`
-  font-size: 1rem;
+  font-size: ${s(1.3)};
   font-weight: 800;
   color: #8B9AAF;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  margin: 1rem 0;
+  margin: ${s(1.25)} 0;
 `;
 
 const PickedUserName = styled.p`
-  font-size: 1.875rem;
+  font-size: ${s(2.625)};
   font-weight: 500;
-  margin: 1rem 0;
+  margin: ${s(1.25)} 0;
 `;
 
 const BackButton = styled.button`
   width: 100%;
-  padding: 0.625rem 0;
+  padding: ${s(0.875)} 0;
   background: #4E7FF8;
   color: #fff;
   border: none;
   border-radius: 0.375rem;
-  font-size: 0.875rem;
+  font-size: ${s(1.125)};
   font-weight: 600;
   font-family: inherit;
   cursor: pointer;

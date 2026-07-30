@@ -31,6 +31,7 @@ Down below, we list all the possible configurations this plugin supports, and th
     browserNotificationEnabled: true
     pickedUserTimeWindow: 10 # seconds
     preventCloseDelaySeconds: 3 # seconds
+    modalUiScale: 1
 ```
 
 | Name                   | Description                          | Default                     |
@@ -40,7 +41,23 @@ Down below, we list all the possible configurations this plugin supports, and th
 | `browserNotificationEnabled` | Flag that decides whether to send browser notification when user is picked | `false` |
 | `pickedUserTimeWindow` | Time window to consider a user as recently picked (users that join after that time will not see the last modal) | `10`               |
 | `preventCloseDelaySeconds` | Delay in seconds before the modal can be closed to prevent accidental closures | `3` |
+| `modalUiScale` | Multiplier applied to all font sizes and spacing values in the modal UI | `1` |
 
+
+### Size Multiplier
+
+By default, the modal uses a base set of font sizes and spacing values (`modalUiScale: 1`). You can scale all of them up or down uniformly by setting `modalUiScale` to any positive number. For example, `0.8` makes everything 20% smaller and `1.5` makes everything 50% larger.
+
+```yaml
+public:
+  # ...
+  plugins:
+    - name: BbbPluginPickRandomUser
+      settings:
+        modalUiScale: 0.8  # shrink all fonts and spacing by 20%
+```
+
+The multiplier applies to: font sizes, padding, margins, gaps, and list max-heights throughout the modal.
 
 ### Prevent Close Delay
 

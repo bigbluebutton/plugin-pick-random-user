@@ -201,6 +201,7 @@ export function PickUserModal(props: PickUserModalProps) {
       shouldCloseOnOverlayClick={canClose}
       shouldCloseOnEsc={canClose}
       overlayElement={renderOverlay}
+      $modalUiScale={pickRandomUserSettings.modalUiScale}
     >
       <Styled.ModalHeader>
         <Styled.ModalTitle>
