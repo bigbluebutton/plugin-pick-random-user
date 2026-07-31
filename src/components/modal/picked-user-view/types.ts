@@ -1,11 +1,23 @@
-import { CurrentUserData } from 'bigbluebutton-html-plugin-sdk';
-import { ReplaceEntryFunction } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
-import { PickedUser, PickedUserWithEntryId } from '../../pick-random-user/types';
+import {
+  CurrentUserData,
+  DataChannelEntryResponseType,
+  GraphqlResponseWrapper,
+  PushEntryFunction,
+} from 'bigbluebutton-html-plugin-sdk';
+import { IntlShape } from 'react-intl';
+import { PickedUserWithEntryId, PickedUserSeenEntryDataChannel } from '../../pick-random-user/types';
 
 export interface PickedUserViewComponentProps {
-    title: string;
-    updatePickedRandomUser: ReplaceEntryFunction<PickedUser>;
-    pickedUserWithEntryId: PickedUserWithEntryId;
+    intl: IntlShape;
+    pickedUserWithEntryId: PickedUserWithEntryId | null;
     currentUser: CurrentUserData;
-    isYou: boolean;
+    pickedUserSeenEntries: GraphqlResponseWrapper<
+        DataChannelEntryResponseType<PickedUserSeenEntryDataChannel>[]>;
+    pushPickedUserSeen: PushEntryFunction<PickedUserSeenEntryDataChannel>;
+    // On v0.0.x "back" returns to the presenter view inside the modal. On this branch the
+    // presenter view is the sidekick panel, so "back" simply dismisses the modal.
+    handleBack: () => void;
+    showBackButton: boolean;
+    remainingSeconds: number;
+    canClose: boolean;
 }

@@ -5,8 +5,8 @@ const path = require('path');
 module.exports = {
   entry: './src/index.tsx',
   output: {
-    filename: 'PickRandomUserPlugin.js',
-    library: 'PickRandomUserPlugin',
+    filename: 'BbbPluginPickRandomUser.js',
+    library: 'BbbPluginPickRandomUser',
     libraryTarget: 'umd',
     publicPath: '/',
     globalObject: 'this',
@@ -17,8 +17,18 @@ module.exports = {
     host: '0.0.0.0',
     hot: false,
     liveReload: false,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization, ngrok-skip-browser-warning',
+    },
     client: {
       overlay: false,
+      webSocketURL: {
+        hostname: 'localhost',
+        port: 4701,
+        protocol: 'ws',
+      },
     },
     onBeforeSetupMiddleware: (devServer) => {
       if (!devServer) {
@@ -53,14 +63,12 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.jsx', '.tsx', '.ts'],
-    alias: {
-      '@locales': path.resolve(__dirname, './locales'),
-    },
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
         { from: 'manifest.json', to: './' }, // Copy manifest.json to static/ in the output folder
+        { from: 'public/locales/', to: './locales/' }, // Copy all locales to the output folder
       ],
     }),
   ],
