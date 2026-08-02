@@ -3,9 +3,15 @@ import { coreElements } from './core/coreElements';
 export const elements = {
   ...coreElements,
 
-  // Action button dropdown items injected by the plugin
-  pickRandomUserActionButton: 'li[data-test="actionDropdownButtonPlugin"]',
-  displayLastRandomlyPickedUser: 'li[data-test="displayLastRandomlyPickedUser"]',
+  // Apps gallery entry contributed by the plugin's sidekick area. The client builds the
+  // attribute as `apps_gallery_item_<dataTest>`, where <dataTest> comes from the
+  // GenericContentSidekickArea registration in
+  // src/components/extensible-areas/generic-content-sidekick-area/component.tsx.
+  pickRandomUserAppsGalleryItem: 'div[data-test="apps_gallery_item_pickRandomUser"]',
+
+  // Sidekick panel: the client's header, and the plugin's own panel root inside it.
+  pickRandomUserSidekickHeader: 'header[data-test="sidekick_header_pickRandomUser"]',
+  pickRandomUserPanel: 'div[data-test="pickRandomUserPanel"]',
 
   // Modal close button
   pickRandomUserModalCloseButton: '[data-test="pickRandomUserModalCloseButton"]',

@@ -16,9 +16,9 @@ import {
 } from '../core/helpers';
 import {
   attendeeCleanupAfterTest,
-  goBackToPresenterView,
+  closePickedUserModal,
   moderatorCleanupAfterTest,
-  openModal,
+  openPickRandomUserPanel,
 } from './helpers';
 
 const PLUGIN_NAME = 'pick-random-user-plugin';
@@ -107,6 +107,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
 
   if (ISOLATED) {
     test.beforeEach(async ({ browser, request }, testInfo) => {
+      test.setTimeout(120000);
       await setupMeeting(browser, request, testInfo);
     });
     test.afterEach(async () => {
@@ -115,6 +116,8 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     });
   } else {
     test.beforeAll(async ({ browser, request }, testInfo) => {
+      // Two users joining a fresh meeting does not reliably fit in the default budget.
+      test.setTimeout(120000);
       await setupMeeting(browser, request, testInfo);
     });
     test.afterAll(async () => {
@@ -128,7 +131,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
 
   test('should show the same picked user name on both the presenter page and the attendee page', async (): Promise<void> => {
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
 
     // With default filters the attendee is the only eligible viewer.
     await modPage.hasElement(
@@ -140,7 +143,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     // Pick the user.
     await modPage.page.click(e.pickRandomUserPickButton);
 
-    // Presenter page: transition to picked-user view.
+    // Presenter page: the picked-user modal opens on top of the panel.
     await modPage.hasElement(
       e.pickRandomUserPickedUserName,
       'presenter page should show the picked user name',
@@ -170,7 +173,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
 
   test('should open the attendee modal automatically without any action on the attendee side', async (): Promise<void> => {
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await modPage.hasElement(e.pickRandomUserPickButton, 'pick button should be visible', ELEMENT_WAIT_LONGER_TIME);
 
     // Pick – the attendee has not interacted with their page at all.
@@ -186,7 +189,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
 
   test('should show the "Result" section label to both the picked attendee and the presenter', async (): Promise<void> => {
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await modPage.hasElement(e.pickRandomUserPickButton, 'pick button should be visible', ELEMENT_WAIT_LONGER_TIME);
     await modPage.page.click(e.pickRandomUserPickButton);
 
@@ -197,7 +200,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
       'picked attendee should see the "Result" section label',
     );
 
-    await modPage.hasElement(e.pickRandomUserPickedUserViewTitle, 'presenter modal should transition to picked-user view', ELEMENT_WAIT_LONGER_TIME);
+    await modPage.hasElement(e.pickRandomUserPickedUserViewTitle, 'presenter should see the picked-user modal', ELEMENT_WAIT_LONGER_TIME);
     await modPage.hasText(
       e.pickRandomUserPickedUserViewTitle,
       'Result',
@@ -205,9 +208,9 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     );
   });
 
-  test('should keep the previously-picked viewer in the available pool and re-pick the same user when "include already picked users" is enabled and the presenter navigates back', async (): Promise<void> => {
+  test('should keep the previously-picked viewer in the available pool and re-pick the same user when "include already picked users" is enabled', async (): Promise<void> => {
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
 
     // Enable "Include already picked users" so the viewer stays eligible after being picked.
     await modPage.page.click(e.includePickedUsersChip);
@@ -221,7 +224,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     await modPage.page.click(e.pickRandomUserPickButton);
     await modPage.hasElement(
       e.pickRandomUserPickedUserViewTitle,
-      'presenter should transition to the picked-user view',
+      'presenter should see the picked-user modal',
       ELEMENT_WAIT_LONGER_TIME,
     );
 
@@ -229,8 +232,8 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     const firstPickedName = await modPage.getLocator(e.pickRandomUserPickedUserName).textContent();
     test.expect(firstPickedName, 'first picked user name should not be empty').toBeTruthy();
 
-    // Return to the presenter view via the back button.
-    await goBackToPresenterView(modPage);
+    // Dismiss the picked-user modal; the presenter panel is behind it, untouched.
+    await closePickedUserModal(modPage);
 
     // ── Assertion 1: attendee appears in the "Previously picked" list ────────
     const pickedList = modPage.getLocator(`${e.pickRandomUserPreviouslyPickedList} li`);
@@ -258,7 +261,7 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
     await modPage.page.click(e.pickRandomUserPickButton);
     await modPage.hasElement(
       e.pickRandomUserPickedUserViewTitle,
-      'presenter should transition to picked-user view after re-picking',
+      'presenter should see the picked-user modal after re-picking',
       ELEMENT_WAIT_LONGER_TIME,
     );
     const secondPickedName = await modPage.getLocator(e.pickRandomUserPickedUserName).textContent();
@@ -266,43 +269,6 @@ test.describe('Pick Random User Plugin - Behavioural (multi-user)', () => {
       secondPickedName,
       'the same user must be picked again - they are the only eligible viewer in the pool',
     ).toBe(firstPickedName);
-  });
-
-  test('should inject "Display last randomly picked user" into the attendee actions dropdown after a pick', async (): Promise<void> => {
-    await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
-    await modPage.hasElement(e.pickRandomUserPickButton, 'pick button should be visible', ELEMENT_WAIT_LONGER_TIME);
-    await modPage.page.click(e.pickRandomUserPickButton);
-
-    // Wait for the data channel to sync on the attendee side.
-    await attendeePage.hasElement(
-      e.pickRandomUserPickedUserViewTitle,
-      'attendee modal should open (confirms data channel received the pick)',
-      ELEMENT_WAIT_LONGER_TIME,
-    );
-
-    // Close the attendee modal so the actions dropdown is accessible.
-    await attendeePage.page.click(e.pickRandomUserModalCloseButton);
-    await attendeePage.wasRemoved(
-      e.pickRandomUserPickedUserViewTitle,
-      'attendee modal should close after clicking the close button',
-      ELEMENT_WAIT_TIME,
-    );
-
-    // Open the attendee's actions dropdown.
-    await attendeePage.page.waitForSelector(e.whiteboard, { timeout: ELEMENT_WAIT_LONGER_TIME });
-    await attendeePage.page.click(e.actions);
-
-    // The plugin injects "Display last randomly picked user" for attendees.
-    await attendeePage.hasElement(
-      e.displayLastRandomlyPickedUser,
-      'attendee actions dropdown should contain the plugin option',
-    );
-    await attendeePage.hasText(
-      e.displayLastRandomlyPickedUser,
-      'Display last randomly picked user',
-      'plugin option should read "Display last randomly picked user" for the attendee',
-    );
   });
 });
 
@@ -380,6 +346,7 @@ test.describe('Pick Random User Plugin - Behavioural (countdown and close-preven
 
   if (ISOLATED) {
     test.beforeEach(async ({ browser, request }, testInfo) => {
+      test.setTimeout(120000);
       await setupMeeting(browser, request, testInfo);
     });
     test.afterEach(async () => {
@@ -388,6 +355,8 @@ test.describe('Pick Random User Plugin - Behavioural (countdown and close-preven
     });
   } else {
     test.beforeAll(async ({ browser, request }, testInfo) => {
+      // Two users joining a fresh meeting does not reliably fit in the default budget.
+      test.setTimeout(120000);
       await setupMeeting(browser, request, testInfo);
     });
     test.afterAll(async () => {
@@ -402,11 +371,11 @@ test.describe('Pick Random User Plugin - Behavioural (countdown and close-preven
   test('should show a countdown message to both users during the prevent-close delay', async (): Promise<void> => {
     test.skip(!SETTINGS_OVERRIDE_URL, 'Set PREVENT_CLOSE_DELAY_SETTINGS_URL in .env to enable this test');
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await modPage.hasElement(e.pickRandomUserPickButton, 'pick button should be visible', ELEMENT_WAIT_LONGER_TIME);
     await modPage.page.click(e.pickRandomUserPickButton);
 
-    await modPage.hasElement(e.pickRandomUserPickedUserViewTitle, 'presenter view should open', ELEMENT_WAIT_LONGER_TIME);
+    await modPage.hasElement(e.pickRandomUserPickedUserViewTitle, 'presenter modal should open', ELEMENT_WAIT_LONGER_TIME);
     await attendeePage.hasElement(e.pickRandomUserPickedUserViewTitle, 'attendee view should open', ELEMENT_WAIT_LONGER_TIME);
 
     const attendeeCountdown = attendeePage.getLocator(e.pickRandomUserCountDownMessage);
@@ -425,7 +394,7 @@ test.describe('Pick Random User Plugin - Behavioural (countdown and close-preven
   test('should not close the picked attendee modal when clicking the overlay during the countdown lock period', async (): Promise<void> => {
     test.skip(!SETTINGS_OVERRIDE_URL, 'Set PREVENT_CLOSE_DELAY_SETTINGS_URL in .env to enable this test');
     await waitForAttendeeMeeting(attendeePage);
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await modPage.hasElement(e.pickRandomUserPickButton, 'pick button should be visible', ELEMENT_WAIT_LONGER_TIME);
 
     // Pick the attendee – the countdown lock starts on the attendee side immediately.

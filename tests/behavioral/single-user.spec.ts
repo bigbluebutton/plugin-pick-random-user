@@ -11,7 +11,7 @@ import { SessionPage as ModPage } from '../core/sessionPage';
 import { Plugin } from '../core/plugin';
 import { encodeCustomParams } from '../core/helpers';
 import {
-  goBackToPresenterView, openModal, moderatorCleanupAfterTest, clickToggleOnWithRetry,
+  closePickedUserModal, openPickRandomUserPanel, moderatorCleanupAfterTest, clickToggleOnWithRetry,
 } from './helpers';
 
 const PLUGIN_NAME = 'pick-random-user-plugin';
@@ -34,12 +34,12 @@ async function enableAllFilters(modPage: ModPage): Promise<void> {
   await clickToggleOnWithRetry(modPage, e.includePickedUsersChip, 'includePickedUsers', e.includePickedUsersCheckbox);
 }
 
-/** Pick a user and wait for the picked-user view to appear. */
+/** Pick a user and wait for the picked-user modal to open on top of the panel. */
 async function pickUser(modPage: ModPage): Promise<void> {
   await modPage.page.click(e.pickRandomUserPickButton);
   await modPage.hasElement(
     e.pickRandomUserPickedUserViewTitle,
-    'picked-user view should appear after clicking pick',
+    'picked-user modal should open after clicking pick',
     ELEMENT_WAIT_LONGER_TIME,
   );
 }
@@ -100,13 +100,13 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
     });
   }
 
-  test('should show "Pick next random user" button (not "Pick random user") after navigating back from picked-user view when includePickedUsers is enabled', async (): Promise<void> => {
+  test('should show "Pick next random user" button (not "Pick random user") after closing the picked-user modal when includePickedUsers is enabled', async (): Promise<void> => {
     // With "Include already picked users" ON the presenter stays in the pool
-    // after being picked, so the pick button remains visible on return.
-    await openModal(modPage);
+    // after being picked, so the pick button in the panel keeps its place.
+    await openPickRandomUserPanel(modPage);
     await enableAllFilters(modPage);
     await pickUser(modPage);
-    await goBackToPresenterView(modPage);
+    await closePickedUserModal(modPage);
 
     await modPage.hasElement(
       e.pickRandomUserPickButton,
@@ -120,10 +120,10 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
   });
 
   test('should list the picked user in the "Previously picked" section after picking', async (): Promise<void> => {
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await enableAllFilters(modPage);
     await pickUser(modPage);
-    await goBackToPresenterView(modPage);
+    await closePickedUserModal(modPage);
 
     // The "Previously picked" <ul> should contain at least one <li> entry.
     const pickedList = modPage.getLocator(`${e.pickRandomUserPreviouslyPickedList} li`);
@@ -133,10 +133,10 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
   });
 
   test('should empty the "Previously picked" list when "Clear All" is clicked', async (): Promise<void> => {
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await enableAllFilters(modPage);
     await pickUser(modPage);
-    await goBackToPresenterView(modPage);
+    await closePickedUserModal(modPage);
 
     // Confirm there is at least one entry before clearing.
     const pickedList = modPage.getLocator(`${e.pickRandomUserPreviouslyPickedList} li`);
@@ -156,7 +156,7 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
   test('should drop available count to 0 and show "no users" warning after picking with "Include already picked users" unchecked', async (): Promise<void> => {
     // With includePickedUsers=false (default), a picked user is immediately
     // removed from the eligible pool after being selected.
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await enableInclusionFilters(modPage); // does NOT enable includePickedUsers
 
     // Verify 1 user is available before picking.
@@ -167,7 +167,7 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
     );
 
     await pickUser(modPage);
-    await goBackToPresenterView(modPage);
+    await closePickedUserModal(modPage);
 
     // After picking, the presenter is now in the picked list and excluded.
     await modPage.hasElement(
@@ -183,10 +183,10 @@ test.describe('Pick Random User Plugin - Behavioural (single user)', () => {
 
   test('should restore the pick button after "Clear All" resets the picked-user history', async (): Promise<void> => {
     // Scenario: pick once (user excluded) → warning shown → Clear All → user eligible again.
-    await openModal(modPage);
+    await openPickRandomUserPanel(modPage);
     await enableInclusionFilters(modPage); // includePickedUsers stays OFF
     await pickUser(modPage);
-    await goBackToPresenterView(modPage);
+    await closePickedUserModal(modPage);
 
     // No-users warning is shown (picked user excluded).
     await modPage.hasElement(

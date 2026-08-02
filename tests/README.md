@@ -5,6 +5,27 @@ The test infrastructure lives entirely inside `tests/core/`.
 
 ---
 
+## How the plugin is reached (BigBlueButton 4.0)
+
+This branch targets BigBlueButton 4.0, which has no actions-button dropdown. The presenter
+view is the plugin's **sidekick panel**, opened from the **apps gallery** in the navigation
+sidebar; the modal only ever shows the picked user and opens by itself after a pick, for
+presenter and viewers alike.
+
+Consequences for the tests:
+
+- `openPickRandomUserPanel()` (in `tests/behavioral/helpers.ts`) replaces the old
+  "open the modal from the actions dropdown" helper. It is idempotent — the panel is a
+  sidebar and stays open across tests in a suite.
+- `closePickedUserModal()` replaces `goBackToPresenterView()`. "Back" dismisses the modal;
+  the panel behind it was never unmounted.
+- The apps gallery entry is found through `apps_gallery_item_pickRandomUser`. The client
+  builds that attribute from the `dataTest` passed to `GenericContentSidekickArea` in
+  `src/components/extensible-areas/generic-content-sidekick-area/component.tsx`, so the
+  suite never has to match on the translated panel name.
+
+---
+
 ## Test scenarios
 
 ### Structural (`tests/structural/test.spec.ts`)

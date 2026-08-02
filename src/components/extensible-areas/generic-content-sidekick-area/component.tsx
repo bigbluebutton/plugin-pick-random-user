@@ -8,6 +8,10 @@ import { GenericContentSidekickAreaManagerProps } from './types';
 import { PickRandomUserPanel } from '../../pick-random-user-panel/component';
 
 const NAVIGATION_SIDEBAR_BUTTON_ICON = 'random';
+// The client derives its own data-test attributes from this (sidekick_menu_item_<x>,
+// sidekick_header_<x>), which is how the e2e suite finds the apps gallery entry without
+// having to match on the translated name.
+const SIDEKICK_AREA_DATA_TEST = 'pickRandomUser';
 
 const intlMessages = defineMessages({
   sidekickAreaTitle: {
@@ -70,6 +74,7 @@ function GenericContentSidekickAreaManager(
           section: '',
           open: false,
           buttonIcon: NAVIGATION_SIDEBAR_BUTTON_ICON,
+          dataTest: SIDEKICK_AREA_DATA_TEST,
           ...(genericContentId.current && { id: genericContentId.current }),
         }),
       ]);
