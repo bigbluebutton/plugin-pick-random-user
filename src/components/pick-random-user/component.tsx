@@ -93,7 +93,6 @@ function PickRandomUserPlugin({ pluginUuid: uuid }: PickRandomUserPluginProps) {
           pluginApi,
           intl,
           currentUser,
-          currentUserInfo,
           pickRandomUserSettings,
         }}
       />

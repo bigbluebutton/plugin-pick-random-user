@@ -33,33 +33,38 @@ function GenericContentSidekickAreaManager(
     pluginApi,
     intl,
     currentUser,
-    currentUserInfo,
     pickRandomUserSettings,
   } = props;
 
   const genericContentId = useRef<string | undefined>('');
+  // The client may call contentFunction more than once for the same container (for
+  // instance when the item is re-registered). Calling createRoot twice on one element
+  // detaches the previously rendered tree and leaves the panel blank, so the root is
+  // kept and reused for as long as the container is the same node.
+  const panelRoot = useRef<{ element: HTMLElement; root: ReactDOM.Root } | null>(null);
 
   const sidekickAreaName = intl.formatMessage(intlMessages.sidekickAreaTitle);
   const { modalUiScale } = pickRandomUserSettings;
+  const isPresenter = !!currentUser?.presenter;
 
   useEffect(() => {
-    if (currentUser?.presenter) {
+    if (isPresenter) {
       const generatedIds = pluginApi.setGenericContentItems([
         new GenericContentSidekickArea({
           contentFunction: (element: HTMLElement) => {
-            const root = ReactDOM.createRoot(element);
-            root.render(
-              <React.StrictMode>
-                <PickRandomUserPanel
-                  {...{
-                    pluginApi,
-                    intl,
-                    modalUiScale,
-                  }}
-                />
-              </React.StrictMode>,
+            if (!panelRoot.current || panelRoot.current.element !== element) {
+              panelRoot.current = { element, root: ReactDOM.createRoot(element) };
+            }
+            panelRoot.current.root.render(
+              <PickRandomUserPanel
+                {...{
+                  pluginApi,
+                  intl,
+                  modalUiScale,
+                }}
+              />,
             );
-            return root;
+            return panelRoot.current.root;
           },
           name: sidekickAreaName,
           section: '',
@@ -75,7 +80,13 @@ function GenericContentSidekickAreaManager(
       pluginApi.setGenericContentItems([]);
       genericContentId.current = '';
     }
-  }, [intl, sidekickAreaName, modalUiScale, currentUserInfo, currentUser]);
+    // Every dependency here has to be a stable value. Registering an item makes the
+    // client re-render, which renders this component again: if a dependency had a fresh
+    // identity on each render (an intl object rebuilt by createIntl, the wrapper object
+    // returned by useCurrentUser, the settings object literal) the effect would re-run
+    // forever and the client's layout engine would report "Maximum update depth
+    // exceeded". `intl` is memoized in commons/hooks; the rest are primitives.
+  }, [pluginApi, intl, sidekickAreaName, modalUiScale, isPresenter]);
 
   return null;
 }
