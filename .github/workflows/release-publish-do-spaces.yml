@@ -1,0 +1,50 @@
+name: Release - publish to DO Spaces
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  publish-to-do-spaces:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Check DO Spaces secrets
+        id: check-secrets
+        env:
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
+        run: |
+          if [ -z "$S3_ACCESS_KEY" ] || [ -z "$S3_SECRET_KEY" ] || [ -z "$S3_BUCKET" ] || [ -z "$S3_ENDPOINT_URL" ]; then
+            echo "DO Spaces secrets not configured, skipping."
+            echo "configured=false" >> $GITHUB_OUTPUT
+          else
+            echo "configured=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install node
+        if: steps.check-secrets.outputs.configured == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+
+      - name: Install dependencies
+        if: steps.check-secrets.outputs.configured == 'true'
+        run: npm ci
+
+      - name: Build dist
+        if: steps.check-secrets.outputs.configured == 'true'
+        run: npm run build-bundle
+
+      - name: Publish dist to Digital Ocean Spaces
+        if: steps.check-secrets.outputs.configured == 'true'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
+        run: |
+          aws s3 sync dist/ s3://${{ secrets.S3_BUCKET }}/${{ github.ref_name }}/ \
+            --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
