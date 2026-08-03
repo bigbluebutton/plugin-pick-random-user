@@ -7,6 +7,7 @@ import {
   PICKED_USER_TIME_WINDOW,
   DEFAULT_PREVENT_CLOSE_DELAY_SECONDS,
   DEFAULT_PING_SOUND_URL,
+  DEFAULT_MODAL_UI_SCALE,
 } from '../../src/commons/constants';
 
 const wrapper = (data: unknown, loading: boolean) => ({ data, loading } as never);
@@ -31,6 +32,7 @@ describe('useGetAllSettings', () => {
       browserNotificationEnabled: false,
       pickedUserTimeWindow: PICKED_USER_TIME_WINDOW,
       preventCloseDelaySeconds: DEFAULT_PREVENT_CLOSE_DELAY_SECONDS,
+      modalUiScale: DEFAULT_MODAL_UI_SCALE,
     });
   });
 
@@ -41,6 +43,7 @@ describe('useGetAllSettings', () => {
       pingSoundUrl: 'resources/sounds/alarm.mp3',
       pickedUserTimeWindow: 20,
       preventCloseDelaySeconds: 5,
+      modalUiScale: 1.5,
     };
 
     const { result } = renderHook(() => useGetAllSettings(wrapper(settings, false)));
@@ -51,6 +54,15 @@ describe('useGetAllSettings', () => {
       pingSoundUrl: 'resources/sounds/alarm.mp3',
       pickedUserTimeWindow: 20,
       preventCloseDelaySeconds: 5,
+      modalUiScale: 1.5,
     });
+  });
+
+  it('falls back to the default UI scale when modalUiScale is not configured', () => {
+    const settings = { pingSoundEnabled: true };
+
+    const { result } = renderHook(() => useGetAllSettings(wrapper(settings, false)));
+
+    expect(result.current.modalUiScale).toBe(DEFAULT_MODAL_UI_SCALE);
   });
 });

@@ -13,8 +13,10 @@ import { useGetInternationalization } from '../../src/commons/hooks';
 // the sidekick panel goes blank because its React root is recreated on every pass.
 
 vi.mock('bigbluebutton-html-plugin-sdk', () => ({
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  GenericContentSidekickArea: class { constructor(itemProps: any) { Object.assign(this, itemProps); } },
+  GenericContentSidekickArea: class {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    constructor(itemProps: any) { Object.assign(this, itemProps); }
+  },
   RESET_DATA_CHANNEL: 'RESET_DATA_CHANNEL',
   DataChannelTypes: { LATEST_ITEM: 'Hooks::DataChannel::LatestItem' },
   pluginLogger: {
