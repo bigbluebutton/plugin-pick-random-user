@@ -30,7 +30,8 @@ module.exports = {
         protocol: 'ws',
       },
     },
-    onBeforeSetupMiddleware: (devServer) => {
+    // webpack-dev-server v5 removed onBeforeSetupMiddleware in favour of setupMiddlewares.
+    setupMiddlewares: (middlewares, devServer) => {
       if (!devServer) {
         throw new Error('webpack-dev-server is not defined');
       }
@@ -39,6 +40,8 @@ module.exports = {
       devServer.app.get('/manifest.json', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'manifest.json'));
       });
+
+      return middlewares;
     },
   },
   module: {
