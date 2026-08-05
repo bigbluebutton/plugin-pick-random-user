@@ -2,6 +2,7 @@ import * as React from 'react';
 import { RESET_DATA_CHANNEL } from 'bigbluebutton-html-plugin-sdk';
 import { DataChannelEntryResponseType } from 'bigbluebutton-html-plugin-sdk/dist/cjs/data-channel/types';
 import { defineMessages } from 'react-intl';
+import { BBButton } from '@bigbluebutton/bbb-ui-components-react';
 
 import * as Styled from './styles';
 import { PickedUser } from '../../pick-random-user/types';
@@ -311,13 +312,16 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
             <Styled.SectionLabel>
               {intl.formatMessage(intlMessages.previouslyPickedTitle)}
             </Styled.SectionLabel>
-            <Styled.ClearAllButton
-              type="button"
-              data-test="pickRandomUserClearAllButton"
-              onClick={() => deletionFunction([RESET_DATA_CHANNEL])}
-            >
-              {intl.formatMessage(intlMessages.clearButtonLabel)}
-            </Styled.ClearAllButton>
+            <Styled.ClearAllButtonWrapper>
+              <BBButton
+                variant="subtle"
+                color="default"
+                size="sm"
+                dataTest="pickRandomUserClearAllButton"
+                label={intl.formatMessage(intlMessages.clearButtonLabel)}
+                onClick={() => deletionFunction([RESET_DATA_CHANNEL])}
+              />
+            </Styled.ClearAllButtonWrapper>
           </Styled.SectionHeaderRow>
           {hasPickedUsers ? (
             <Styled.PickedUserListContainer>
@@ -348,17 +352,19 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
           </Styled.NoUsersWarning>
         )}
         {!isLoading && usersCount > 0 && (
-          <Styled.PickButton
-            type="button"
-            data-test="pickRandomUserPickButton"
-            onClick={handlePickRandomUser}
-          >
-            {pickedUserWithEntryId
-              ? intl.formatMessage(includePickedUsers
-                ? intlMessages.pickNextRandomUserButtonLabel
-                : intlMessages.pickAnotherRandomUserButtonLabel)
-              : intl.formatMessage(intlMessages.pickButtonLabel)}
-          </Styled.PickButton>
+          <Styled.PickButtonWrapper>
+            <BBButton
+              variant="primary"
+              color="default"
+              dataTest="pickRandomUserPickButton"
+              label={pickedUserWithEntryId
+                ? intl.formatMessage(includePickedUsers
+                  ? intlMessages.pickNextRandomUserButtonLabel
+                  : intlMessages.pickAnotherRandomUserButtonLabel)
+                : intl.formatMessage(intlMessages.pickButtonLabel)}
+              onClick={handlePickRandomUser}
+            />
+          </Styled.PickButtonWrapper>
         )}
         {!isLoading && usersCount === 0 && (
           <Styled.NoUsersWarning data-test="pickRandomUserNoUsersWarning">
