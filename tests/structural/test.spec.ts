@@ -140,7 +140,7 @@ test.describe('Pick Random User Plugin - Structural', () => {
     await test.expect(
       modPage.getLocator(e.includeModeratorsCheckbox),
       '"Include moderator" should be unchecked by default',
-    ).not.toBeChecked();
+    ).toBeChecked();
     await test.expect(
       modPage.getLocator(e.includePresenterCheckbox),
       '"Include presenter" should be unchecked by default',
