@@ -1,5 +1,5 @@
 {
-  "requiredSdkVersion": "~0.1.9",
+  "requiredSdkVersion": "^0.1.9",
   "name": "BbbPluginPickRandomUser",
   "version": "0.1.2",
   "javascriptEntrypointUrl": "BbbPluginPickRandomUser.js",
