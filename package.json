@@ -4,6 +4,11 @@
   "private": true,
   "main": "./src/index.tsx",
   "dependencies": {
+    "@bigbluebutton/bbb-ui-components-react": "0.7.0",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^6.5.0",
+    "@mui/material": "^6.5.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/node": "^20.3.1",
@@ -12,12 +17,17 @@
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "bigbluebutton-html-plugin-sdk": "0.1.22",
     "path": "^0.12.7",
+    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-chat-elements": "^12.0.14",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
     "react-intl": "^7.1.5",
+    "react-is": "^18.3.1",
     "react-modal": "^3.16.1",
     "styled-components": "^5.3.11"
+  },
+  "overrides": {
+    "react-is": "^18.3.1"
   },
   "scripts": {
     "build-bundle": "webpack --mode production",
@@ -87,7 +97,7 @@
     "vite": "^6.4.3",
     "vitest": "^3.2.6",
     "watch": "^1.0.2",
-    "webpack": "^5.95.0",
+    "webpack": "5.110.1",
     "webpack-cli": "^5.1.1",
     "webpack-dev-server": "^4.15.1",
     "xml2js": "^0.6.2"

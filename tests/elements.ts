@@ -14,7 +14,7 @@ export const elements = {
   pickRandomUserPanel: 'div[data-test="pickRandomUserPanel"]',
 
   // Modal close button
-  pickRandomUserModalCloseButton: '[data-test="pickRandomUserModalCloseButton"]',
+  pickRandomUserModalCloseButton: '[data-test="pickRandomUserModal-close-button"]',
 
   // Presenter view – filter chips (label elements, for click and visibility checks)
   includeModeratorsChip: '[data-test="includeModeratorsChip"]',
