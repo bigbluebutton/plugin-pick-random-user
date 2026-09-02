@@ -184,7 +184,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
             <Styled.FilterCheckboxGroup>
               <span data-test="includeModeratorsChip">
                 <BBBCheckbox
-                  id="includeModerators"
+                  inputProps={{ 'data-test': 'includeModeratorsCheckbox' } as React.InputHTMLAttributes<HTMLInputElement>}
                   label={intl.formatMessage(intlMessages.moderatorsChipLabel)}
                   checked={includeModerators}
                   onChange={() => setFilterOptions((prev) => ({
@@ -195,7 +195,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
 
               <span data-test="includePresenterChip">
                 <BBBCheckbox
-                  id="includePresenter"
+                  inputProps={{ 'data-test': 'includePresenterCheckbox' } as React.InputHTMLAttributes<HTMLInputElement>}
                   label={intl.formatMessage(intlMessages.presenterChipLabel)}
                   checked={includePresenter}
                   onChange={() => setFilterOptions((prev) => ({
@@ -206,7 +206,7 @@ export function PresenterViewComponent(props: PresenterViewComponentProps) {
 
               <span data-test="includePickedUsersChip">
                 <BBBCheckbox
-                  id="includePickedUsers"
+                  inputProps={{ 'data-test': 'includePickedUsersCheckbox' } as React.InputHTMLAttributes<HTMLInputElement>}
                   label={intl.formatMessage(intlMessages.pickedUsersChipLabel)}
                   checked={includePickedUsers}
                   onChange={() => setFilterOptions((prev) => ({

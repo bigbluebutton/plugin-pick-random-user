@@ -22,9 +22,9 @@ export const elements = {
   includePickedUsersChip: '[data-test="includePickedUsersChip"]',
 
   // Presenter view – filter checkboxes (hidden inputs, for isChecked / not.toBeChecked only)
-  includeModeratorsCheckbox: '#includeModerators',
-  includePresenterCheckbox: '#includePresenter',
-  includePickedUsersCheckbox: '#includePickedUsers',
+  includeModeratorsCheckbox: '[data-test="includeModeratorsCheckbox"]',
+  includePresenterCheckbox: '[data-test="includePresenterCheckbox"]',
+  includePickedUsersCheckbox: '[data-test="includePickedUsersCheckbox"]',
 
   // Presenter view – available users section
   pickRandomUserAvailableContent: '[data-test="pickRandomUserAvailableContent"]',
