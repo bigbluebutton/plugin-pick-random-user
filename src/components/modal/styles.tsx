@@ -9,6 +9,12 @@ const s = (val: number, unit = 'rem') => `calc(${val}${unit} * var(--pru-sm, 1))
  * `!important`s. `zoom` (not `calc(... * var(--pru-sm))`) scales modalUiScale
  * into the library components too, since they don't read `--pru-sm`; `width`
  * stays a plain rem value below so zoom doesn't scale it twice.
+ *
+ * `zoom` resolves `vw`/`vh` against the real (unzoomed) viewport and then
+ * multiplies the rendered box by the zoom factor, so a plain `95vw`/`90vh`
+ * cap stops clamping past scale 1 (the multiplication happens after the
+ * cap is checked). Dividing by `--pru-sm` here pre-compensates so the
+ * rendered, zoomed-out size still tops out at 95vw/90vh of the real viewport.
  */
 const PluginModal = styled(BBBModal)<{ $modalUiScale?: number }>`
   --pru-sm: ${({ $modalUiScale }) => $modalUiScale ?? 1};
@@ -20,8 +26,8 @@ const PluginModal = styled(BBBModal)<{ $modalUiScale?: number }>`
   outline-style: solid;
   background-color: ${colors.background.white} !important;
   width: 32rem !important;
-  max-width: 95vw !important;
-  max-height: 90vh !important;
+  max-width: calc(95vw / var(--pru-sm, 1)) !important;
+  max-height: calc(90vh / var(--pru-sm, 1)) !important;
   border-radius: 0.5rem !important;
   box-shadow: 0 0.5rem 2rem ${colors.shadow.default};
   font-family: 'Source Sans Pro', Arial, sans-serif;
