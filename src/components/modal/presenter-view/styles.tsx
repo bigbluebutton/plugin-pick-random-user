@@ -135,18 +135,14 @@ const RoleBadge = styled.span`
 
 // ── Previously picked section ─────────────────────────────────────────────────
 
-const ClearAllButton = styled.button`
-  font-size: ${s(0.9375)};
-  color: #8B9AAF;
-  background: none;
-  border: none;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  cursor: pointer;
-  padding: 0;
-
-  &:hover {
-    color: #6b7d92;
+/**
+ * `BBButton` renders its own `<button>` and takes no `className`, so the only
+ * thing kept here is the scale-aware font size — colors, border and hover come
+ * from the design system.
+ */
+const ClearAllButtonWrapper = styled.div`
+  > button {
+    font-size: ${s(0.9375)};
   }
 `;
 
@@ -228,24 +224,11 @@ const FooterContainer = styled.div`
   flex-shrink: 0;
 `;
 
-const PickButton = styled.button`
-  width: 100%;
-  padding: ${s(0.875)} 0;
-  background: #4E7FF8;
-  color: #fff;
-  border: none;
-  border-radius: 0.375rem;
-  font-size: ${s(1.125)};
-  font-weight: 600;
-  font-family: inherit;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: ${s(0.5)};
-
-  &:hover {
-    background: #3D6DE0;
+/** Same as `ClearAllButtonWrapper`, plus the full-width footer sizing. */
+const PickButtonWrapper = styled.div`
+  > button {
+    width: 100%;
+    font-size: ${s(1.125)};
   }
 `;
 
@@ -298,7 +281,7 @@ export {
 
   UserNameText,
   RoleBadge,
-  ClearAllButton,
+  ClearAllButtonWrapper,
   EmptyStateContainer,
   EmptyStateText,
   LoadingContainer,
@@ -309,7 +292,7 @@ export {
   PickedUserRow,
   PickedTimeText,
   FooterContainer,
-  PickButton,
+  PickButtonWrapper,
   NoUsersWarning,
   PresenterViewWrapper,
   ContentPadding,
